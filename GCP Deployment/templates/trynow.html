@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignSpeak</title>
+    <link rel="stylesheet" href="static/trynow.css">
+</head>
+<body>
+    <div class="Desktop5">
+        <div id="box">
+            <video id="video" autoplay playsinline muted></video>
+        </div>
+        <div id="label-container">
+            <h2 id="label">Label: </h2>
+            <p id="certainty">Certainty: %</p>
+        </div>
+        <div id="text-container">
+            <p id="disclaimer">
+                Disclaimer: This is a prototype and may not be accurate, we are using an optimized version of the model for real-time inference as it becomes too much for the web server to handle the original model, the results may vary from the original model and may not be completely accurate. We only display the label when the certainty is above 70% to improve the accuracy of the results.
+            </p>
+        </div>        
+        <div class="Rectangle4"></div>
+        <div class="AboutUs">
+            <a href="about" class="Button">About Us</a>
+        </div>
+        <div class="OurVision">
+            <a href="ourvision" class="Button">Our Vision</a>
+        </div>
+        <div class="ContactUs">
+            <a href="contactus" class="Button">Contact Us</a>
+        </div>
+
+        <script>
+            const labelElement = document.getElementById('label');
+            const certaintyElement = document.getElementById('certainty');
+            const videoElement = document.getElementById('video');
+
+            let streaming = false;
+            let videoStream;
+
+            async function startCamera() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    videoElement.srcObject = stream;
+                    videoStream = stream;
+                    videoElement.addEventListener('canplay', () => {
+                        if (!streaming) {
+                            streaming = true;
+                            setInterval(sendFrame, 1000); // Set the interval based on your needs
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error accessing camera:', error);
+                    labelElement.innerText = 'Error accessing camera';
+                    certaintyElement.innerText = '';
+                }
+            }
+
+            startCamera();
+
+            function sendFrame() {
+                const canvas = document.createElement('canvas');
+                canvas.width = videoElement.videoWidth;
+                canvas.height = videoElement.videoHeight;
+                const context = canvas.getContext('2d');
+                context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+                canvas.toBlob(blob => {
+                    const formData = new FormData();
+                    formData.append('frame', blob, 'frame.jpg');
+
+                    fetch('/process_frame', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        labelElement.innerText = `Label: ${data.label}`;
+                        certaintyElement.innerText = `Certainty: ${data.certainty}%`;
+                    })
+                    .catch(error => console.error('Error processing frame:', error));
+                }, 'image/jpeg');
+            }
+        </script>
+    </div>
+</body>
+</html>

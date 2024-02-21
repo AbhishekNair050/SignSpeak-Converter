@@ -1,0 +1,6 @@
+gunicorn
+mediapipe
+opencv-python
+numpy
+tensorflow==2.7.0
+flask
