@@ -1,0 +1,202 @@
+/* Reset some default styles */
+body, h1, h2, h3, p, margin, padding {
+    margin: 0;
+    padding: 0;
+}
+.Desktop3 {
+    width: 100vw;
+    max-width: 2560px;
+    height: 100vh;
+    position: relative;
+    background: #F9FEFF;
+}
+
+/* Apply styles to Rectangle2 */
+.Rectangle4 {
+    width: 100%;
+    height: 9.2593%;
+    left: 0;
+    top: 0;
+    position: absolute;
+    background: #ECA869;
+}
+
+
+/* Apply styles to "About Us" text */
+.AboutUs {
+    width: 10.9375%;
+    height: 6.2963%;
+    left: 3.2292%;
+    top: 2.6852%;
+    position: absolute;
+    color: black;
+    font-size: 120.5%; /* Increase the font size */
+    font-family: Inter;
+    font-weight: 600;
+    word-wrap: break-word;
+}
+
+/* Apply styles to "Our Vision" text */
+.OurVision {
+    width: 10.9375%;
+    height: 6.2963%;
+    left: 14.5833%;
+    top: 2.4074%;
+    position: absolute;
+    color: black;
+    font-size: 120.5%; /* Increase the font size */
+    font-family: Inter;
+    font-weight: 600;
+    word-wrap: break-word;
+}
+
+/* Apply styles to "Contact Us" text */
+.ContactUs {
+    width: 10.9375%;
+    height: 6.2963%;
+    left: 27.2917%;
+    top: 2.4074%;
+    position: absolute;
+    color: black;
+    font-size: 120.5%; /* Increase the font size */
+    font-family: Inter;
+    font-weight: 600;
+    word-wrap: break-word;
+}
+.Button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ECA869; /* Green color, you can change this */
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.Button:hover {
+    background-color: #B5D5C5; /* Darker green on hover, you can change this */
+}
+.Rectangle2Background {
+    width: 90.72%; /* 1951px / 1920px * 100% */
+    height: 72.5%; /* 783px / 1080px * 100% */
+    right: 0;
+    top: 18.89%; /* 204px / 1080px * 100% */
+    position: absolute;
+    background: 	#faf0e6;
+    border-top-left-radius: 41.67%; /* 400px / 960px * 100% */
+}
+.Rectangle11 {
+    width: 10.26%; /* 197px / 1920px * 100% */
+    height: 6.39%; /* 69px / 1080px * 100% */
+    left: 85.57%; /* 1641px / 1920px * 100% */
+    top: 11%; /* 135px / 1080px * 100% */
+    position: absolute;
+    background: #B08BBB;
+    box-shadow: 0.21% 0.21% 0.21%; /* 4px / 1920px * 100% */
+    border-radius: 0.83%; /* 16px / 1920px * 100% */
+    filter: blur(0.42%); /* 4px / 960px * 100% */
+}
+.TryNow {
+    font-size: 120%; /* 32px / 480px * 100% */
+    left: 88%; /* 1674px / 1920px * 100% */
+    top: 12.5%; /* 151px / 1080px * 100% */
+    position: absolute;
+    font-family: Inter;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.Button2 {
+    display: inline-block;
+    padding: 3px 3px;
+    background-color: #B08BBB; /* Green color, you can change this */
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+
+}
+
+.Button2:hover {
+    background-color: #B5D5C5; /* Darker green on hover, you can change this */
+}
+
+.LnadingText {
+    width: 33.85%;
+    font-size: 300%;
+    left: 4%;
+    top: 18%; /* Adjusted the top value */
+    position: absolute; /* Added absolute positioning */
+    color : black;
+}
+.Rect1{
+    width: 25%; /* 636px / 1920px * 100% */
+    height: 35%; /* 281px / 1080px * 100% */
+    left: 15%;
+    top: 50%;
+    position: absolute;
+    background: white;
+    box-shadow: 0px 0px 0.83% 0.23% rgba(0, 0, 0, 0.05); /* 9px / 1080px * 100% */
+    border-radius: 1.04%; /* 10px / 960px * 100% */
+}
+.Rect2{
+    width: 25%; /* 636px / 1920px * 100% */
+    height: 35%; /* 281px / 1080px * 100% */
+    left: 45%;
+    top: 50%;
+    position: absolute;
+    background: white;
+    box-shadow: 0px 0px 0.83% 0.23% rgba(0, 0, 0, 0.05); /* 9px / 1080px * 100% */
+    border-radius: 1.04%; /* 10px / 960px * 100% */
+}
+.Rect3{
+    width: 25%; /* 636px / 1920px * 100% */
+    height: 35%; /* 281px / 1080px * 100% */
+    left: 75%;
+    top: 50%;
+    position: absolute;
+    background: white;
+    box-shadow: 0px 0px 0.83% 0.23% rgba(0, 0, 0, 0.05); /* 9px / 1080px * 100% */
+    border-radius: 1.04%; /* 10px / 960px * 100% */
+}
+.WhatsappImage20240218At11131 {
+    width: 22%;
+    height: 35%;
+    top : 50%;
+    left : 47%;
+    position: absolute;
+}
+.WhatsappImage20240218At11132 {
+    width: 15%;
+    height: 20%;
+    top : 50%;
+    left : 20%;
+    position: absolute;
+}
+.WhatsappImage20240218At11133{
+    width: 15%;
+    height: 20%;
+    top : 50%;
+    left : 80%;
+    position: absolute;
+}
+.WithOurCuttingEdge2WaySign
+{
+    width: 33.85%;
+    font-size: 100%;
+    left: 17%;
+    top: 70%; /* Adjusted the top value */
+    position: absolute; /* Added absolute positioning */
+    color : black;
+}
+.ConvertsRealTimeCameraInputIntoAudioOutput
+{
+    width: 33.85%;
+    font-size: 100%;
+    left: 76%;
+    top: 70%; /* Adjusted the top value */
+    position: absolute; /* Added absolute positioning */
+    color : black;
+}
