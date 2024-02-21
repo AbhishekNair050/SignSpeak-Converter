@@ -57,7 +57,7 @@ SignSpeak/
 1. Clone the repository:
 
 ```
-git clone https://github.com/your-username/SignSpeak.git
+git clone https://github.com/AbhishekNair050/SignSpeak-Converter.git
 ```
 
 2. Install the required Python packages:
@@ -76,9 +76,9 @@ python main.py
 
 2. Open your web browser and navigate to `http://localhost:5000`.
 3. Allow access to your webcam when prompted.
-4. Start signing, and the application will translate your gestures into text in real-time.
+4. Go to http://localhost:5000/trynow and Start signing, the application will translate your gestures into text in real-time.
 
-`main.py` is the Flask application responsible for setting up the web server and handling the real-time sign language translation process. It receives video frames from the client, processes them to extract landmarks, and performs sign language translation using a pre-trained model. The translated label and the associated certainty are then returned to the client as a JSON response.
+`main.py` is the Flask application responsible for setting up the web server and handling the real-time sign language translation process. It receives video frames from the client, processes them to extract landmarks, and performs sign language translation using our pre-trained model. The translated label and the associated certainty are then returned to the client as a JSON response.
 
 The application is also deployed on Google Cloud Platform (GCP) and can be accessed at https://team-signsync.appspot.com/.
 
