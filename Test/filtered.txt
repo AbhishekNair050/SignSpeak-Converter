@@ -1,0 +1,530 @@
+accept
+access
+accident
+acquire
+address
+adult
+advantage
+after
+afternoon
+again
+agreement
+airplane
+all day
+all way
+alone
+alright
+always
+amazing
+and
+angry
+announce
+answer
+anyone
+apart
+appear
+appointment
+area
+arrive
+ask
+at
+attention
+attitude
+automatic
+average
+avoid
+awake
+away
+back up
+bad
+bag
+balance
+band aid
+bandage
+bank
+bar
+barely
+battery
+beach
+because
+become
+before
+behavior
+behind
+believe
+benefit
+best
+better
+between
+bicycle
+big
+bleed
+blind
+blood
+blow
+body
+bomb
+bone
+bored
+borrow
+both
+bother
+bottom
+box
+break
+breathe
+bridge
+bright
+bring
+brother
+budget
+buffalo
+bug
+building
+bull
+bulldozer
+bullshit
+burn
+bus
+business
+busted
+busy
+but
+buy
+bye
+cabinet
+calm
+can
+cancel
+cancellation
+car
+car accident
+car battery
+careful
+cause
+ceiling
+cellphone
+center
+chair
+chaos
+charge
+charge card
+cheap
+check
+children
+city
+clean
+clear
+clock
+close
+college
+come here
+come out
+comfortable
+communication
+complain
+confused
+congratulations
+consume
+contact
+continue
+cooperate
+corner
+cost
+crack
+crash
+crash plane
+credit card
+cross
+danger
+deaf
+deaf school
+death
+decide
+decline
+demand
+die
+different
+different situation
+dirty
+disagreement
+disappear
+distracted
+dizzy
+doctor
+doesnt matter
+dont care
+dont feel like
+dont know
+dont like
+dont mind
+dont need
+dont want
+door
+double
+down
+drive
+drop
+drunk
+due
+each
+each other
+early
+earn
+earth
+earthquake
+east
+easy
+easy to do
+edge
+egypt
+eight
+either
+elementary school
+eleven
+end
+energy
+engine start
+engineer
+english
+enjoy
+enough
+enter
+escape
+even
+every night
+every year
+everyday
+everything
+excited
+expensive
+experience
+experienced
+faculty
+faint
+fair
+fall
+far
+fast
+fat
+fault
+fed up
+feedback
+fence
+fifth
+find
+fine
+finish
+firetruck
+first
+fix
+focus
+follow
+fond
+for
+forest
+forever
+four
+fourth
+fraud
+free
+freeway
+friday
+from
+from then on
+front
+funny
+garage
+gas
+gate
+gate close
+gesture
+get
+get off
+get through
+girl
+go
+go ahead
+go through
+gone
+good
+gotcha
+graduate school
+great
+green
+gym
+half hour
+hall
+happy
+hate
+have
+head back
+headache
+health
+hear
+hearing
+hearing aid
+hello
+help
+here
+high school
+holiday
+home
+honk
+hospital
+hot
+hotel
+hour
+house
+how
+hundred
+hurricane
+hurry
+hurt
+i love you
+important
+journey
+jump
+key
+kid
+knock
+land
+last
+last week
+late
+later
+leave
+left
+lift
+lighter
+lock
+long line
+long time
+look at
+look back
+look for
+look forward
+look like
+loud
+lousy
+love
+mechanic
+medicine
+meet
+meeting
+miss
+missing
+misunderstand
+monday
+money
+month
+more
+morning
+motorcycle
+move
+museum
+need
+nice
+night
+nine
+no
+no big deal
+noise
+noon
+north
+not interested
+nothing
+nothing at all
+now
+ocean
+office
+often
+oh i see
+ok
+open
+opportunity
+option
+outside
+parade
+park
+party
+pass
+pass out
+passport
+pay
+penny
+people
+perfect
+period
+permission
+persistent
+pharmacist
+phone
+pizza
+place
+playground
+please
+policeman
+prayer
+prefer
+pregnant
+price
+priority
+prison
+problem
+quiet
+quit
+reach
+responsibility
+restaurant
+ride
+right
+river
+road
+rude
+rush
+sad
+safe
+saturday
+save
+save money
+school
+seven
+shop
+short distance
+sick
+sign
+sign language
+siren
+sit
+situation
+six
+slow
+sorry
+stadium
+stop
+straight
+strange
+street
+stress
+student
+stupid
+summer
+sunday
+sunrise
+sunset
+support
+sure
+talk
+talk dirty
+thank you
+that
+there
+things
+think
+third
+thirsty
+this
+three
+thrilled
+thunder
+thursday
+ticket
+time to time
+timeout
+tired
+tired of
+to
+today
+together
+tomorrow
+too much
+tornado
+total
+tow
+tractor
+traffic
+train
+transfer
+translate
+trash
+travel
+tree
+trip
+trouble
+truck
+true
+try
+tuesday
+turn
+turn around
+two
+two weeks
+umbrella
+unaware
+uncertain
+under
+university
+upset
+us
+use
+valley
+very
+very interested
+village
+vision
+visit
+visitor
+wait
+walk
+wall
+wallet
+wander
+want
+warn
+wave
+way
+we
+we will see
+weather
+wednesday
+week
+weekend
+weird
+welcome
+west
+what
+what for
+whatever
+wheel
+when
+where
+which
+while
+whistle
+white
+who
+whole
+why
+why not
+will
+will go
+wind
+window
+window open
+windy
+with
+without
+work
+workshop
+worry
+worse
+wow
+wrong
+yes
+yesterday
+you
+young
+your
+yourself
+zoo
