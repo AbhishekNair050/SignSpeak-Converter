@@ -31,8 +31,12 @@ SignSpeak/
 │   └── requirements.txt
 ├── frontend/
 ├── models/
+│   └──model.tflite
 ├── Test/
 ├── unoptimized model/
+│   ├── model.h5
+│   ├── app.yaml
+│   └── requirements.txt
 ├── SignSpeak.ipynb
 ├── preprocess/
 └── livelandmarks/
