@@ -1,5 +1,3 @@
-Sure, here's a comprehensive README file for the SignSpeak project:
-
 # SignSpeak: Sign Language Translation
 
 SignSpeak is a web application that translates sign language gestures into text in real-time using machine learning models. The project aims to bridge the communication gap between the deaf and hearing communities, making conversations more accessible and inclusive.
