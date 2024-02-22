@@ -87,19 +87,19 @@ The application is also deployed on Google Cloud Platform (GCP) and can be acces
 ## Models
 The model architecture is based on a transformer structure with convolutional and self-attention blocks. Here are the key components:
 
-1. **Stem Convolution:** A dense layer is used to project the input landmarks to a lower dimension.
+- **Stem Convolution:** A dense layer is used to project the input landmarks to a lower dimension.
 
-2. **Convolutional Blocks:** A series of convolutional blocks are applied, each consisting of a depthwise separable convolution, batch normalization, and an Efficient Channel Attention (ECA) layer.
+- **Convolutional Blocks:** A series of convolutional blocks are applied, each consisting of a depthwise separable convolution, batch normalization, and an Efficient Channel Attention (ECA) layer.
 
-3. **Transformer Blocks:** Transformer blocks are introduced, consisting of a multi-head self-attention layer and a feed-forward network. These blocks capture long-range dependencies in the input sequence.
+- **Transformer Blocks:** Transformer blocks are introduced, consisting of a multi-head self-attention layer and a feed-forward network. These blocks capture long-range dependencies in the input sequence.
 
-4. **Top Convolution:** A dense layer is applied to project the features to a higher dimension.
+- **Top Convolution:** A dense layer is applied to project the features to a higher dimension.
 
-5. **Global Average Pooling:** A global average pooling layer is used to aggregate the temporal information.
+- **Global Average Pooling:** A global average pooling layer is used to aggregate the temporal information.
 
-6. **Late Dropout:** A late dropout layer is applied to prevent overfitting.
+- **Late Dropout:** A late dropout layer is applied to prevent overfitting.
 
-7. **Classification Head:** A final dense layer with softmax activation is used for multi-class classification, where the output corresponds to the glosses.
+- **Classification Head:** A final dense layer with softmax activation is used for multi-class classification, where the output corresponds to the glosses.
 
 The model is compiled with a sparse categorical cross-entropy loss and optimized using the Rectified Adam optimizer with a custom learning rate schedule (OneCycleLR). The Lookahead optimizer wrapper is also used for better convergence.
 
