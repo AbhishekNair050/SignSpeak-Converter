@@ -85,13 +85,35 @@ python main.py
 The application is also deployed on Google Cloud Platform (GCP) and can be accessed at https://team-signsync.appspot.com/.
 
 ## Models
+The model architecture is based on a transformer structure with convolutional and self-attention blocks. Here are the key components:
 
+1. **Stem Convolution:** A dense layer is used to project the input landmarks to a lower dimension.
+
+2. **Convolutional Blocks:** A series of convolutional blocks are applied, each consisting of a depthwise separable convolution, batch normalization, and an Efficient Channel Attention (ECA) layer.
+
+3. **Transformer Blocks:** Transformer blocks are introduced, consisting of a multi-head self-attention layer and a feed-forward network. These blocks capture long-range dependencies in the input sequence.
+
+4. **Top Convolution:** A dense layer is applied to project the features to a higher dimension.
+
+5. **Global Average Pooling:** A global average pooling layer is used to aggregate the temporal information.
+
+6. **Late Dropout:** A late dropout layer is applied to prevent overfitting.
+
+7. **Classification Head:** A final dense layer with softmax activation is used for multi-class classification, where the output corresponds to the glosses.
+
+The model is compiled with a sparse categorical cross-entropy loss and optimized using the Rectified Adam optimizer with a custom learning rate schedule (OneCycleLR). The Lookahead optimizer wrapper is also used for better convergence.
+
+**Model Optimization and Deployment:**
+
+After training, the model is saved in the H5 format and converted to a TFLite model for efficient deployment on web and mobile applications. The TFLite model is evaluated on the test set, and the gloss accuracy and label accuracy are reported.
 The project uses two TFLite models for sign language translation:
 
 1. **Hand and Pose Model**: This model uses hand and pose landmarks to translate sign language gestures.
 2. **Hand, Face, and Pose Model**: This model incorporates hand, face, and pose landmarks for improved translation accuracy.
 
 The models are located in the `models` directory.
+
+Additionally, the code includes a section for calculating the confidence range and certainty of the model's predictions. This involves estimating the positive and negative ranges for each class based on the mean and standard deviation of the predictions. A certainty score can then be calculated using these ranges, which could be useful for interpreting the model's outputs during inference.
 
 ## Data Preprocessing
 
