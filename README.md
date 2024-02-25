@@ -1,6 +1,7 @@
 # SignSpeak Converter - Breaking the Silence, Connecting Lives.
 
 SignSpeak Converter is a web application that translates sign language gestures into text in real-time using machine learning models. The project aims to bridge the communication gap between the deaf and hearing communities, making conversations more accessible and inclusive.
+
 the application can be accessed at - https://team-signsync.appspot.com/
 
 ## Table of Contents
