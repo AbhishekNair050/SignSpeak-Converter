@@ -20,11 +20,8 @@ The project is structured as follows:
 SignSpeak/
 ├── GCP Deployment/
 │   ├── static/
-│   │   ├── css/
-│   │   └── images/
 │   ├── templates/
-│   │   ├── html/
-│   │   └── assets/
+│   ├── assets/
 │   ├── main.py
 │   ├── app.yaml
 │   └── requirements.txt
