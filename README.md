@@ -10,9 +10,7 @@ SignSpeak is a web application that translates sign language gestures into text 
 - [Models](#models)
 - [Data Preprocessing](#data-preprocessing)
 - [Deployment](#deployment)
-- [Contributing](#contributing)
 - [Future Plan](#Future-Plan)
-- [License](#license)
 
 ## Project Structure
 
@@ -205,9 +203,6 @@ gcloud app deploy
 
 4. After successful deployment, the application will be accessible at the provided URL (https://`your-project-id`.appspot.com/).
 
-## Contributing
-
-Contributions are welcome! If you have any suggestions, bug reports, or feature requests, please open an issue or submit a pull request.
 ## Future Plan
  - improve the model
  - make it faster
@@ -215,6 +210,3 @@ Contributions are welcome! If you have any suggestions, bug reports, or feature 
  - make the deployment mobile accesible
  - add more words to the gloss
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
