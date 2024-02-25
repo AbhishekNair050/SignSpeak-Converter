@@ -1,6 +1,7 @@
-# SignSpeak: Sign Language Translation
+# SignSpeak Converter - Breaking the Silence, Connecting Lives.
 
-SignSpeak is a web application that translates sign language gestures into text in real-time using machine learning models. The project aims to bridge the communication gap between the deaf and hearing communities, making conversations more accessible and inclusive.
+SignSpeak Converter is a web application that translates sign language gestures into text in real-time using machine learning models. The project aims to bridge the communication gap between the deaf and hearing communities, making conversations more accessible and inclusive.
+the application can be accessed at - https://team-signsync.appspot.com/
 
 ## Table of Contents
 
@@ -54,7 +55,7 @@ SignSpeak/
 1. Clone the repository:
 
 ```
-git clone https://github.com/AbhishekNair050/SignSpeak-Converter.git
+git clone https://github.com/AbhishekNair050/SignSpeak-Converter
 ```
 
 2. Install the required Python packages:
@@ -65,7 +66,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-1. Run the Flask application:
+1. Run the Flask application from /GCP Deployment:
 
 ```
 python main.py
@@ -105,6 +106,7 @@ The project uses two TFLite models for sign language translation:
 
 1. **Hand and Pose Model**: This model uses hand and pose landmarks to translate sign language gestures.
 2. **Hand, Face, and Pose Model**: This model incorporates hand, face, and pose landmarks for improved translation accuracy.
+We ended up using the model trained on just the hand and pose landmarks as it performed better and gave better results.
 
 The models are located in the `models` directory.
 
@@ -114,13 +116,19 @@ Additionally, the code includes a section for calculating the confidence range a
 
 The `SignSpeak.ipynb` notebook contains the code for data preprocessing, including:
 
-- Data splitting
-- Landmark extraction
-- Data encoding
-- Data augmentation
-- Label filtering
-- Label encoding
-- Model training and evaluation
+- Data splitting: The dataset is split into training, validation and test sets for model development and evaluation.
+
+- Landmark extraction: MediaPipe is used to extract hand, pose and facial landmarks from the video frames. 
+
+- Data encoding: The extracted landmarks are encoded as NumPy arrays for efficient usage during training.
+
+- Data augmentation: Techniques like rotation, shifting and zooming are applied to boost model generalization. 
+
+- Label encoding: The textual labels are encoded as integer classes for model training.
+
+- Label filtering: FastText removes semantically irrelevant labels to focus the model on key terms.
+
+- Model training and evaluation: The model is trained on the processed dataset and evaluated on the test set for metrics like accuracy.
 
 ### Landmark Extraction
 
@@ -173,7 +181,7 @@ The padded sequences are further divided into smaller sub-sequences of length 60
 
 ### Interpolation
 
-The sub-sequences are interpolated to a fixed length (100 frames) using linear interpolation with the `interpolate` function. This ensures consistent input shapes for the model.
+The sub-sequences are interpolated to a fixed length (100 frames) using linear interpolation with the `interpolate` function, then they are furhter sequenced to 120 frames length. This ensures consistent input shapes for the model.
 
 ### Label Encoding
 
@@ -201,9 +209,9 @@ gcloud app deploy
 4. After successful deployment, the application will be accessible at the provided URL (https://`your-project-id`.appspot.com/).
 
 ## Future Plan
- - improve the model
- - make it faster
- - improve the UI/UX
- - make the deployment mobile accesible
- - add more words to the gloss
+- Enhance model accuracy through architecture tweaks and more training data.
+- Expand glossary coverage to boost vocabulary.
+- Optimize inference speed via quantization and compression. 
+- Refine UI/UX for smoother user experience.
+- Build mobile apps/make the website mobile accessible on iOS and Android for wider access.
 
