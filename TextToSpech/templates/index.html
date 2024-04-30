@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Input</title>
+  </head>
+  <body>
+    <h2>Translate and Play Text</h2>
+    <form action="/submit" method="post">
+      <input
+        type="text"
+        name="user_text"
+        placeholder="Enter text here"
+        required
+      /><br />
+      <input
+        type="text"
+        name="target_language"
+        placeholder="Target language code (e.g., 'en' for English)"
+        required
+      /><br />
+      <button type="submit">Submit</button>
+    </form>
+
+    {% if translated_text %}
+    <div>
+      <h3>Translated Text:</h3>
+      <p>{{ translated_text }}</p>
+    </div>
+    {% endif %}
+  </body>
+</html>
