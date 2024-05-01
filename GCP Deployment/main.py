@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, send_file, Response
+from flask import Flask, render_template, request, jsonify, send_file, make_response
 import numpy as np
 from preprocess import *
 import traceback
@@ -17,6 +17,8 @@ previous_time = time.time()
 frame_time = time.time()
 global label
 global certainty
+global sentence
+sentence = ""
 label = ""
 certainty = 0.0
 
@@ -26,14 +28,14 @@ def index():
     return render_template("page1.html")
 
 
-@app.route("/ourvision", methods=["GET"])
+@app.route("/vision", methods=["GET"])
 def ourvision():
     return render_template("ourvision.html")
 
 
-@app.route("/about", methods=["GET"])
+@app.route("/impact", methods=["GET"])
 def about():
-    return render_template("about.html")
+    return render_template("impact.html")
 
 
 @app.route("/contactus", methods=["GET"])
@@ -49,6 +51,11 @@ def trynow():
     )
 
 
+@app.route("/use", methods=["GET"])
+def use():
+    return render_template("use.html")
+
+
 @app.route("/update_labels_certainty", methods=["POST"])
 def update_labels_certainty():
     global label, certainty
@@ -62,6 +69,7 @@ def process_frame():
     global previous_time
     global frame_time
     global sequence
+    global sentence
     all_landmarks = []
     try:
         epsilon = 1e-6
@@ -139,13 +147,17 @@ def combine_videos(video_paths, output_path, output_size=(640, 480), fps=30):
     return output_path
 
 
+import cv2
+from flask import Response, jsonify
+
+
 @app.route("/texttosign", methods=["POST"])
 def texttosign():
     videos = []
-    sentence = "hello how are you"
+    sentence = request.json.get("sentence", "")
     database_dir = "database"
     word = sentence.split(" ")
-    print(word)
+
     for i in word:
         if not os.path.exists(f"{database_dir}/{i}.mp4"):
             res = download_video(i)
@@ -157,44 +169,29 @@ def texttosign():
         else:
             videos.append(f"{database_dir}/{i}.mp4")
 
-    print(videos)
-    combined_video_path = combine_videos(videos, "output.mp4")
-    return jsonify({"video_path": combined_video_path})
+    combined_video_frames = combine_videos(videos, "output.mp4")
+    # cap = cv2.VideoCapture("output.mp4")
+    # # Encode the combined video using cv2.VideoWriter
+    # output_size = (640, 480)  # Adjust the output size as per your requirements
+    # fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+    # fps = 30  # Adjust the FPS as per your requirements
+    # out = cv2.VideoWriter("temp.mp4", fourcc, fps, output_size)
 
+    # for frame in combined_video_frames:
+    #     frame = cv2.resize(frame, output_size)  # Resize the frame if needed
+    #     out.write(frame)
 
-import cv2
-from flask import Response
+    # out.release()
 
+    with open("output.mp4", "rb") as f:
+        video_bytes = f.read()
 
-@app.route("/output.mp4", methods=["GET"])
-def get_combined_video():
-    try:
-        cap = cv2.VideoCapture("output.mp4")
-        if not cap.isOpened():
-            return "Error opening video file", 500
+    # os.remove("temp.mp4")
 
-        # Create a VideoWriter object to encode the video
-        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-        output_size = (640, 480)
-        fps = 30
-        out = cv2.VideoWriter("output_encoded.mp4", fourcc, fps, output_size)
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                break
-            frame = cv2.resize(frame, output_size)
-            out.write(frame)
-        cap.release()
-        out.release()
-        with open("output_encoded.mp4", "rb") as f:
-            video_bytes = f.read()
-
-        os.remove("output_encoded.mp4")
-        return Response(video_bytes, mimetype="video/mp4")
-
-    except Exception as e:
-        print(f"Error serving video: {str(e)}")
-        return "Error serving video", 500
+    response = make_response(video_bytes)
+    response.headers.set("Content-Type", "video/mp4")
+    response.headers.set("Content-Disposition", "attachment", filename="output.mp4")
+    return response
 
 
 if __name__ == "__main__":
