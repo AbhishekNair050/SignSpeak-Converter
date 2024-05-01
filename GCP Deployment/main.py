@@ -162,21 +162,36 @@ def texttosign():
     return jsonify({"video_path": combined_video_path})
 
 
+import cv2
+from flask import Response
+
+
 @app.route("/output.mp4", methods=["GET"])
 def get_combined_video():
     try:
         cap = cv2.VideoCapture("output.mp4")
-        ret, frame = cap.read()
-        if not ret:
-            return "Error reading video", 500
+        if not cap.isOpened():
+            return "Error opening video file", 500
 
-        # Encode frame as jpg image
-        _, buffer = cv2.imencode(".jpg", frame)
+        # Create a VideoWriter object to encode the video
+        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+        output_size = (640, 480)
+        fps = 30
+        out = cv2.VideoWriter("output_encoded.mp4", fourcc, fps, output_size)
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
+            frame = cv2.resize(frame, output_size)
+            out.write(frame)
+        cap.release()
+        out.release()
+        with open("output_encoded.mp4", "rb") as f:
+            video_bytes = f.read()
 
-        # Convert buffer to bytes
-        video_bytes = buffer.tobytes()
-
+        os.remove("output_encoded.mp4")
         return Response(video_bytes, mimetype="video/mp4")
+
     except Exception as e:
         print(f"Error serving video: {str(e)}")
         return "Error serving video", 500
