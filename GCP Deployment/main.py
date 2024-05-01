@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file, Response
 import numpy as np
 from preprocess import *
 import traceback
 import cv2
+from TextToSign.ASL_scraper import *
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
@@ -117,6 +118,68 @@ def process_frame():
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
+
+def combine_videos(video_paths, output_path, output_size=(640, 480), fps=30):
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # MJPEG codec
+    out = cv2.VideoWriter(output_path, fourcc, fps, output_size)
+
+    for video_path in video_paths:
+        video = cv2.VideoCapture(video_path)
+        while video.isOpened():
+            ret, frame = video.read()
+            if ret:
+                frame = cv2.resize(frame, output_size)
+                out.write(frame)
+            else:
+                break
+        video.release()
+
+    out.release()
+    return output_path
+
+
+@app.route("/texttosign", methods=["POST"])
+def texttosign():
+    videos = []
+    sentence = "hello how are you"
+    database_dir = "database"
+    word = sentence.split(" ")
+    print(word)
+    for i in word:
+        if not os.path.exists(f"{database_dir}/{i}.mp4"):
+            res = download_video(i)
+            if res:
+                os.rename(f"{i}.mp4", f"{database_dir}/{i}.mp4")
+                videos.append(f"{database_dir}/{i}.mp4")
+            else:
+                print("Error downloading video.")
+        else:
+            videos.append(f"{database_dir}/{i}.mp4")
+
+    print(videos)
+    combined_video_path = combine_videos(videos, "output.mp4")
+    return jsonify({"video_path": combined_video_path})
+
+
+@app.route("/output.mp4", methods=["GET"])
+def get_combined_video():
+    try:
+        cap = cv2.VideoCapture("output.mp4")
+        ret, frame = cap.read()
+        if not ret:
+            return "Error reading video", 500
+
+        # Encode frame as jpg image
+        _, buffer = cv2.imencode(".jpg", frame)
+
+        # Convert buffer to bytes
+        video_bytes = buffer.tobytes()
+
+        return Response(video_bytes, mimetype="video/mp4")
+    except Exception as e:
+        print(f"Error serving video: {str(e)}")
+        return "Error serving video", 500
 
 
 if __name__ == "__main__":
