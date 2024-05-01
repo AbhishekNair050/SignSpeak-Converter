@@ -120,6 +120,7 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
+            left: 50%;
         }
         input[type="text"] {
             padding: 10px;
@@ -149,6 +150,11 @@
             margin-top: 20px;
         }
         #video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        #outputVideo {
             width: 100%;
             height: 100%;
             object-fit: contain;
@@ -201,7 +207,7 @@
     <div class="section-container" id="section2Container">
         <section id="section2">
             <div class="box" style="width: 45%; height: 70%; left: 8%; top: 37%; position: absolute; background: #F9FEFF; border-radius: 16px; border: 5px #ff8c00 solid; backdrop-filter: blur(4px);">
-                <video id="outputVideo" playsinline muted></video>
+                <video id="outputVideo" autoplay playsinline muted></video>
             </div>
             <div id="inputOptions">
                 <input type="text" id="textInput" placeholder="Type your text">
@@ -337,12 +343,25 @@
                     },
                     body: JSON.stringify({ sentence: textInput }),
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to combine videos');
+                    }
+                    return fetch('/output.mp4'); // Fetch the video bytes from /output.mp4
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch video');
+                    }
+                    return response.blob(); // Get the response data as a Blob
+                })
                 .then(data => {
-                    // Update the video source with the combined video
                     const videoElement = document.getElementById('outputVideo');
-                    videoElement.src = data.video_path;
-                    videoElement.play();
+                    const videoUrl = URL.createObjectURL(data); // Create a URL for the Blob
+                    videoElement.src = videoUrl; // Set the video source to the Blob URL
+                    videoElement.play()
+                        .then(() => console.log('Video started playing'))
+                        .catch(error => console.error('Error playing video:', error));
                 })
                 .catch(error => console.error('Error combining videos:', error));
             }
