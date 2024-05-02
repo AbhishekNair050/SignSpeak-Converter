@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SignSpeak</title>
     <link rel="stylesheet" href="impact.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 </head>
 <body>
     <div class="Desktop1">
@@ -30,8 +31,8 @@
         <div id="numberDisplay1" class="NumberDisplay">0</div>
         <div id="numberDisplay2" class="NumberDisplay">0</div>
         <div id="numberDisplay3" class="NumberDisplay">0</div>
-        <div class="Rectangle3">How many people globally rely on sign language <br>as their primary mode of communication?</div>
-        <div class="Rectangle4">What percentage of individuals with hearing loss <br> experience barriers in accessing digital content?</div>
+        <div class="Rectangle3">How many people globally rely on sign<br> language as their primary mode of <br>communication?</div>
+        <div class="Rectangle4">What percentage of individuals with <br> hearing loss experience barriers in <br> accessing digital content?</div>
         <div class="Rectangle5">How many languages and dialects of sign language exist around the world?</div>
         <hr class="Line1"> 
         <hr class="Line2">
@@ -42,49 +43,57 @@
         <img class="WhatsappImage20240218At11131" src="D:\Code\committee\SignSpeak\v155_86.png" alt="Image 1">
         <img class="WhatsappImage20240218At11132" src="D:\Code\committee\SignSpeak\v155_90.png" alt="Image 1">
         <img class="WhatsappImage20240218At11133" src="D:\Code\committee\SignSpeak\WhatsApp Image 2024-02-18 at 11.31.53.jpeg" alt="Image 1">
-        <div class="WithOurCuttingEdge2WaySign">Embracing inclusivity, our mission is to <br>break down communication barriers <br>by harnessing the power of sign language <br>recognition.</div>
-        <div class="ConvertsRealTimeCameraInputIntoAudioOutput">Bridging the communication gap is at the<br>core of our vision. We aim to enhance <br>connectivity by seamlessly translating<br> sign language.</div>
+        <div class="WithOurCuttingEdge2WaySign">Embracing inclusivity, our mission<br> is to break down communication<br> barriers by harnessing the power <br>of sign language recognition.</div>
+        <div class="ConvertsRealTimeCameraInputIntoAudioOutput">Bridging the communication gap <br>is at the core of our vision. We <br> aim to enhance connectivity by <br> seamlessly translating sign <br> language.</div>
     </div>
     <script>
         // Animation for first number container
         var displayElement1 = document.getElementById('numberDisplay1');
         var number1 = 0;
         function increaseNumber1() {
-            if (number1 <= 400) {
-                displayElement1.textContent = formatNumber(number1);
-                number1 += 5;
-                setTimeout(increaseNumber1, 0.05);
+            if (number1 <= 72) {
+                displayElement1.textContent = formatNumber(number1, 'millions');
+                number1 += 1;
+                setTimeout(increaseNumber1, 0.005);
             }
         }
         increaseNumber1();
-
+    
         // Animation for second number container
         var displayElement2 = document.getElementById('numberDisplay2');
         var number2 = 0;
         function increaseNumber2() {
-            if (number2 <= 800) { // Adjust the limit as needed
-                displayElement2.textContent = formatNumber(number2);
-                number2 += 10; // Adjust increment amount as needed
-                setTimeout(increaseNumber2, 0.15);
+            if (number2 <= 71) { // Adjust the limit as needed
+                displayElement2.textContent = formatNumber(number2, 'thousands');
+                number2 += 1; // Adjust increment amount as needed
+                setTimeout(increaseNumber2, 0.005);
             }
         }
         increaseNumber2();
-
+    
         // Animation for third number container
         var displayElement3 = document.getElementById('numberDisplay3');
         var number3 = 0;
         function increaseNumber3() {
-            if (number3 <= 1200) { // Adjust the limit as needed
-                displayElement3.textContent = formatNumber(number3);
-                number3 += 15; // Adjust increment amount as needed
-                setTimeout(increaseNumber3, 0.05);
+            if (number3 <= 300) { // Adjust the limit as needed
+                displayElement3.textContent = formatNumber(number3, 'normal');
+                number3 += 5; // Adjust increment amount as needed
+                setTimeout(increaseNumber3, 0.005);
             }
         }
         increaseNumber3();
-
-        function formatNumber(num) {
-            return num.toLocaleString() + 'k';
+    
+        function formatNumber(num, type) {
+            switch (type) {
+                case 'millions':
+                    return (num) + 'M+';
+                case 'thousands':
+                    return (num) + '%';
+                default:
+                    return num.toLocaleString() + '+';
+            }
         }
     </script>
+    
 </body>
 </html>
