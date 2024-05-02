@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignSpeak</title>
+    <link rel="stylesheet" href="static/use.css">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+</head>
+<body>
+    <div class="Desktop1">
+        <div class="Rectangle2"></div>
+        <div class="permanent-text">Uses:- <br>The Signspeak Converter represents a pioneering<br> breakthrough in communication technology, serving as <br>a two-way bridge between sign language users and <br>non-signers.Its applications span across various domains, <br>including education, healthcare, corporate environments,<br> customer service, emergency services, career development,<br> and public spaces. By facilitating seamless communication,<br> it promotes inclusivity, accessibility, and equal participation<br>  for individuals with hearing impairments. With minor<br> adjustments, it can be customized to suit specific needs <br>within any domain, promising to revolutionize how we <br>interact and engage across different sectors.</div>
+        <div class="Rectangle2"></div>
+        <div class = "GlobalImpact">
+            <a href="impact" class="Button">Global Impact</a>
+        </div>
+        <div class="OurVision">
+            <a href="vision" class="Button">Our Vision</a>
+        </div>
+        <div class="TryNow">
+            <a href="trynow" class="Button">Try Now</a>
+        </div>
+        <div class="Use">
+            <a href="use" class="Button">Use Cases</a>
+        </div>
+        <div class="ContactUs">
+            <a href="contactus" class="Button">Contact Us</a>
+        </div>
+        <div class="Welcome">How we can help you</div>   
+        <div class="image-container">
+            <img id="image" src="static/WhatsApp Image 2024-05-01 at 12.10.17.jpeg" alt="Image">
+            <div class="image-text"></div>
+        </div>
+    </div>
+
+    <script>
+        var images = ['static/WhatsApp Image 2024-05-01 at 12.10.17.jpeg', 'static/WhatsApp Image 2024-05-01 at 12.16.25.jpeg', 'static/WhatsApp Image 2024-05-01 at 13.09.03.jpeg', 'static/WhatsApp Image 2024-05-01 at 13.09.53.jpeg'];
+        var texts = [
+            "In the realm of career development, it offers invaluable \n support by breaking down communication barriers in \n professional settings, during job interviews, team meetings, \n or training sessions.",
+            "In education, it facilitates seamless communication between \n sign language users and non-signers, ensuring inclusivity \n in classrooms.",
+            "In public places such as libraries, museums, and government offices, \n it promotes accessibility for all visitors. It facilitates interactions \n between staff and patrons, enabling seamless access to \n information and services regardless of communication preferences.",
+            "Within the corporate realm, it fosters workplace accessibility,\n empowering deaf employees to fully participate in \n meetings and discussions."
+        ];
+        var currentIndex = 0;
+        var imageElement = document.getElementById('image');
+        var textElement = document.querySelector('.image-text');
+
+        function changeImage() {
+            imageElement.src = images[currentIndex];
+            textElement.innerText = texts[currentIndex];
+            currentIndex = (currentIndex + 1) % images.length; // Loop back to the first image after the last one
+        }
+
+        // Change image every 5 seconds
+        setInterval(changeImage, 5000);
+    </script>   
+</body>
+</html>
