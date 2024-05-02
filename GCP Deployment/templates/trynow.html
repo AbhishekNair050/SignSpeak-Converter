@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,7 +87,7 @@
             background-color: white;
         }
 
-        /* Styling for sections and input options */
+        
         body {
             font-family: Poppins;
             margin: 0;
@@ -98,7 +99,7 @@
             margin-top: 60px;
         }
         .section-container {
-            display: none; /* Hide sections by default */
+            display: none; 
         }
         section {
             height: 100vh;
@@ -116,11 +117,10 @@
             text-align: center;
         }
         #inputOptions {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            left: 50%;
+            position: absolute;
+            top: 30%;
+            left: 20%;
+            text-align: center;
         }
         input[type="text"] {
             padding: 10px;
@@ -159,25 +159,30 @@
             height: 100%;
             object-fit: contain;
         }
+        #label, #certainty, #sentence {
+            font-size: 18px; 
+            margin: 3px 0; 
+        }
+
     </style>
 </head>
 <body>
     <!-- Initial div and links -->
     <div class="Rectangle2"></div>
     <div class="GlobalImpact">
-        <a href="impact.html" class="Button">Global Impact</a>
+        <a href="impact" class="Button">Global Impact</a>
     </div>
     <div class="OurVision">
-        <a href="vision.html" class="Button">Our Vision</a>
+        <a href="vision" class="Button">Our Vision</a>
     </div>
     <div class="TryNow">
-        <a href="trynow.html" class="Button">Try Now</a>
+        <a href="trynow" class="Button">Try Now</a>
     </div>
     <div class="Use">
-        <a href="use.html" class="Button">Use Cases</a>
+        <a href="use" class="Button">Use Cases</a>
     </div>
     <div class="ContactUs">
-        <a href="contact.html" class="Button">Contact Us</a>
+        <a href="contact" class="Button">Contact Us</a>
     </div>
 
     <!-- Container for dropdown and sections -->
@@ -195,9 +200,10 @@
             <div class="box" style="width: 45%; height: 70%; left: 8%; top: 37%; position: absolute; background: #F9FEFF; border-radius: 16px; border: 5px #ff8c00 solid; backdrop-filter: blur(4px);">
                 <video id="video" autoplay playsinline muted></video>
             </div>
-            <div class="box" style="width: 35%; height: 10%; left: 60%; top: 37%; position: absolute; background: #F9FEFF; border: 5px #ff8c00 solid; backdrop-filter: blur(4px); font-size: 60%;padding: 15px;">
+            <div class="box" style="width: 35%; height: 13%; left: 60%; top: 37%; position: absolute; background: #F9FEFF; border: 5px #ff8c00 solid; backdrop-filter: blur(4px); font-size: 60%;padding: 15px;">
                 <h4 id="label">Label: </h4>
                 <h4 id="certainty">Certainty: %</h4>
+                <h4 id="sentence">Sentence: </h4>
             </div>
             <div class="box" style="width: 35%; height: 45%; left: 60%; top: 57%; position: absolute; background: #F9FEFF; border: 1px #ff8c00 solid; backdrop-filter: blur(4px); font-size: 60%;padding: 15px;">
                 Disclaimer: This is a prototype and may not be accurate, we are using an optimized version of the model for real-time inference as it becomes too much for the web server to handle the original model, the results may vary from the original model and may not be completely accurate. We only display the label when the certainty is above 70% to improve the accuracy of the results.
@@ -206,7 +212,7 @@
     </div>
     <div class="section-container" id="section2Container">
         <section id="section2">
-            <div class="box" style="width: 45%; height: 70%; left: 8%; top: 37%; position: absolute; background: #F9FEFF; border-radius: 16px; border: 5px #ff8c00 solid; backdrop-filter: blur(4px);">
+            <div class="box" style="width: 45%; height: 70%; left: 8%; top: 45%; position: absolute; background: #F9FEFF; border-radius: 16px; border: 5px #ff8c00 solid; backdrop-filter: blur(4px);">
                 <video id="outputVideo" autoplay playsinline muted></video>
             </div>
             <div id="inputOptions">
@@ -284,6 +290,7 @@
         }
         const labelElement = document.getElementById('label');
             const certaintyElement = document.getElementById('certainty');
+            const sentenceElement = document.getElementById('sentence');
             const videoElement = document.getElementById('video');
 
             let streaming = false;
@@ -297,7 +304,7 @@
                     videoElement.addEventListener('canplay', () => {
                         if (!streaming) {
                             streaming = true;
-                            setInterval(sendFrame, 1000); // Set the interval based on your needs
+                            setInterval(sendFrame, 1000); 
                         }
                     });
                 } catch (error) {
@@ -328,6 +335,7 @@
                     .then(data => {
                         labelElement.innerText = `Label: ${data.label}`;
                         certaintyElement.innerText = `Certainty: ${data.certainty}%`;
+                        sentenceElement.innerText = `Sentence: ${data.sentence}`;
                     })
                     .catch(error => console.error('Error processing frame:', error));
                 }, 'image/jpeg');
@@ -339,32 +347,45 @@
                 fetch('/texttosign', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ sentence: textInput }),
                 })
-                .then(response => {
+                    .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to combine videos');
                     }
-                    return fetch('/output.mp4'); // Fetch the video bytes from /output.mp4
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch video');
-                    }
-                    return response.blob(); // Get the response data as a Blob
-                })
-                .then(data => {
+                    return response.arrayBuffer(); 
+                    })
+                    .then(data => {
                     const videoElement = document.getElementById('outputVideo');
-                    const videoUrl = URL.createObjectURL(data); // Create a URL for the Blob
-                    videoElement.src = videoUrl; // Set the video source to the Blob URL
-                    videoElement.play()
+                    const blob = new Blob([data], { type: 'video/mp4' }); 
+                    console.log('Blob created:', blob); 
+                    const videoUrl = URL.createObjectURL(blob); 
+                    videoElement.src = videoUrl;
+
+                    videoElement.addEventListener('error', error => {
+                        console.error('Error playing video:', error);
+                
+                    });
+
+                    videoElement.addEventListener('canplaythrough', () => {
+                        videoElement.play()
                         .then(() => console.log('Video started playing'))
                         .catch(error => console.error('Error playing video:', error));
-                })
-                .catch(error => console.error('Error combining videos:', error));
+                    });
+                    setTimeout(() => {
+                        if (!videoElement.paused && !videoElement.ended) {
+                        console.log('Video playing successfully');
+                        } else {
+                        console.error('Error playing video (timeout)');
+                        }
+                    }, 5000); 
+                    })
+                    .catch(error => console.error('Error combining videos:', error));
             }
+
+
     </script>
 </body>
 </html>
