@@ -3,36 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignSpeak</title>
-    <link rel="stylesheet" href="trynow.css">
+    <title>Sign Speak</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <style>
+        #label, #certainty {
+            font-size: 18px; /* Adjust the font size as needed */
+            margin: 3px 0; /* Add margin for spacing */
+        }
+        /* Custom styling */
+        .Rectangle2 {
+            width: 100%;
+            height: 12%;
+            left: 0;
+            top: 0;
+            position: absolute;
+            background: #1995EF;
+        }
+        
+        .GlobalImpact{
+            width: 13%;
+            height: 6.2963%;
+            left: 2.5%;
+            top: 3.25%;
+            position: absolute;
+            color: black;
+            font-size: 120%; /* Increase the font size */
+            font-weight: 600;
+            word-wrap: break-word;
+        }
+        .OurVision{
+            width: 10.9375%;
+            height: 6.2963%;
+            left: 15%;
+            top: 3.25%;
+            position: absolute;
+            color: black;
+            font-size: 120.5%; /* Increase the font size */
+            font-weight: 600;
+            word-wrap: break-word;
+        }
+        .TryNow{
+            width: 10.9375%;
+            height: 6.2963%;
+            left: 25%;
+            top: 3.25%;
+            position: absolute;
+            color: black;
+            font-size: 120.5%; /* Increase the font size */
+            font-weight: 600;
+            word-wrap: break-word;
+        }
+        .Use{
+            width: 10.9375%;
+            height: 6.2963%;
+            left: 33.5%;
+            top: 3.25%;
+            position: absolute;
+            color: black;
+            font-size: 120.5%; /* Increase the font size */
+            font-weight: 600;
+            word-wrap: break-word;
+        }
+        .ContactUs{
+            width: 10.9375%;
+            height: 6.2963%;
+            left: 44%;
+            top: 3.25%;
+            position: absolute;
+            color: black;
+            font-size: 120.5%; /* Increase the font size */
+            font-weight: 600;
+            word-wrap: break-word;
+        }
+        .Button {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: #1995EF; /* Green color, you can change this */
+            color: black;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .Button:hover {
+            background-color: white;
+        }
+
+        /* Styling for sections and input options */
+        body {
+            font-family: Poppins;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+        .container {
+            text-align: center;
+            margin-top: 60px;
+        }
+        .section-container {
+            display: none; /* Hide sections by default */
+        }
+        section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+        #section1 {
+            background-color: #f8f9fa;
+        }
+        #section2 {
+            background-color: #e9ecef;
+            padding: 20px;
+            text-align: center;
+        }
+        #inputOptions {
+            position: absolute;
+            top: 30%;
+            left: 20%;
+            text-align: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1.5rem;
+            margin-right: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            background-color: #1995EF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #007acc;
+        }
+        select {
+            font-size: 1.5rem;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        #outputVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
 </head>
 <body>
-    <div class="Desktop5">
-        <div id="box">
-            <video id="video" autoplay playsinline muted></video>
-        </div>
-        <div id="label-container">
-            <h2 id="label">Label: </h2>
-            <p id="certainty">Certainty: %</p>
-        </div>
-        <div id="text-container">
-            <p id="disclaimer">
-                Disclaimer: This is a prototype and may not be accurate, we are using an optimized version of the model for real-time inference as it becomes too much for the web server to handle the original model, the results may vary from the original model and may not be completely accurate. We only display the label when the certainty is above 70% to improve the accuracy of the results.
-            </p>
-        </div>        
-        <div class="Rectangle4"></div>
-        <div class="AboutUs">
-            <a href="about.html" class="Button">About Us</a>
-        </div>
-        <div class="OurVision">
-            <a href="ourvision.html" class="Button">Our Vision</a>
-        </div>
-        <div class="ContactUs">
-            <a href="contactus.html" class="Button">Contact Us</a>
-        </div>
+    <!-- Initial div and links -->
+    <div class="Rectangle2"></div>
+    <div class="GlobalImpact">
+        <a href="impact.html" class="Button">Global Impact</a>
+    </div>
+    <div class="OurVision">
+        <a href="vision.html" class="Button">Our Vision</a>
+    </div>
+    <div class="TryNow">
+        <a href="trynow.html" class="Button">Try Now</a>
+    </div>
+    <div class="Use">
+        <a href="use.html" class="Button">Use Cases</a>
+    </div>
+    <div class="ContactUs">
+        <a href="contact.html" class="Button">Contact Us</a>
+    </div>
 
-        <script>
-            const labelElement = document.getElementById('label');
+    <!-- Container for dropdown and sections -->
+    <div class="container">
+        <select id="sectionDropdown" onchange="toggleSection(this.value)">
+            <option value="" selected disabled>Select a Section</option>
+            <option value="section1">Sign Language to Text</option>
+            <option value="section2">Text and Audio Input</option>
+        </select>
+    </div>
+
+    <!-- Sections -->
+    <div class="section-container" id="section1Container">
+        <section id="section1">
+            <div class="box" style="width: 45%; height: 70%; left: 8%; top: 37%; position: absolute; background: #F9FEFF; border-radius: 16px; border: 5px #ff8c00 solid; backdrop-filter: blur(4px);">
+                <video id="video" autoplay playsinline muted></video>
+            </div>
+            <div class="box" style="width: 35%; height: 10%; left: 60%; top: 37%; position: absolute; background: #F9FEFF; border: 5px #ff8c00 solid; backdrop-filter: blur(4px); font-size: 60%;padding: 15px;">
+                <h4 id="label">Label: </h4>
+                <h4 id="certainty">Certainty: %</h4>
+            </div>
+            <div class="box" style="width: 35%; height: 45%; left: 60%; top: 57%; position: absolute; background: #F9FEFF; border: 1px #ff8c00 solid; backdrop-filter: blur(4px); font-size: 60%;padding: 15px;">
+                Disclaimer: This is a prototype and may not be accurate, we are using an optimized version of the model for real-time inference as it becomes too much for the web server to handle the original model, the results may vary from the original model and may not be completely accurate. We only display the label when the certainty is above 70% to improve the accuracy of the results.
+            </div> 
+        </section>
+    </div>
+    <div class="section-container" id="section2Container">
+        <section id="section2">
+            <div class="box" style="width: 45%; height: 70%; left: 8%; top: 45%; position: absolute; background: #F9FEFF; border-radius: 16px; border: 5px #ff8c00 solid; backdrop-filter: blur(4px);">
+                <video id="outputVideo" autoplay playsinline muted></video>
+            </div>
+            <div id="inputOptions">
+                <input type="text" id="textInput" placeholder="Type your text">
+                <button onclick="submitText()">Submit Text</button>
+                <button onclick="startListening()">Start Listening</button>
+                <button onclick="stopListening()">Stop Listening</button>
+            </div>
+            <div id="transcription"></div>
+        </section>
+    </div>
+    <script>
+        let recognition;
+
+        function toggleSection(sectionId) {
+            const section1Container = document.getElementById("section1Container");
+            const section2Container = document.getElementById("section2Container");
+        
+            if (sectionId === "section1") {
+                section1Container.style.display = "block";
+                section2Container.style.display = "none";
+                scrollToSection(sectionId);
+            } else if (sectionId === "section2") {
+                section1Container.style.display = "none";
+                section2Container.style.display = "block";
+                scrollToSection(sectionId);
+            }
+        }
+        
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+
+        function submitText() {
+            const textInput = document.getElementById("textInput").value;
+        }
+
+        function startListening() {
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Speech recognition is not supported by this browser.");
+                return;
+            }
+
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = function(event) {
+                let interimTranscript = '';
+                let finalTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    let transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                document.getElementById('transcription').textContent = finalTranscript;
+            };
+
+            recognition.start();
+        }
+
+        function stopListening() {
+            if (recognition) {
+                recognition.stop();
+            }
+        }
+        const labelElement = document.getElementById('label');
             const certaintyElement = document.getElementById('certainty');
             const videoElement = document.getElementById('video');
 
@@ -82,7 +335,39 @@
                     .catch(error => console.error('Error processing frame:', error));
                 }, 'image/jpeg');
             }
-        </script>
-    </div>
+            function submitText() {
+                const textInput = document.getElementById("textInput").value;
+
+                // Make an AJAX request to combine the videos
+                fetch('/texttosign', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ sentence: textInput }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to combine videos');
+                    }
+                    return fetch('/output.mp4'); // Fetch the video bytes from /output.mp4
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch video');
+                    }
+                    return response.blob(); // Get the response data as a Blob
+                })
+                .then(data => {
+                    const videoElement = document.getElementById('outputVideo');
+                    const videoUrl = URL.createObjectURL(data); // Create a URL for the Blob
+                    videoElement.src = videoUrl; // Set the video source to the Blob URL
+                    videoElement.play()
+                        .then(() => console.log('Video started playing'))
+                        .catch(error => console.error('Error playing video:', error));
+                })
+                .catch(error => console.error('Error combining videos:', error));
+            }
+    </script>
 </body>
 </html>
