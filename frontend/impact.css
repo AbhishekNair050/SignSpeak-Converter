@@ -2,6 +2,7 @@
 body, h1, h2, h3, p {
     margin: 0;
     padding: 0;
+    font-family: Poppins;
 }
 body {
     overflow-x: hidden; /* Hide horizontal scrollbar */
@@ -14,18 +15,6 @@ body {
     background: #F9FEFF;
 }
 
-.Rectangle1 {
-    width: 10.2604%;
-    height: 6.3889%;
-    left: 15.1823%;
-    top: 79.4444%;
-    position: absolute;
-    background: #ff8c00; /* Initial background color */
-    box-shadow: 2.0833% 2.0833% 2.0833%;
-    border-radius: 8%;
-    filter: blur(0.8333%);
-    transition: background-color 0.3s ease; /* Add transition for smooth color change */
-}
 /* Apply styles to Rectangle2 */
 .Rectangle2 {
     width: 100%;
@@ -35,16 +24,14 @@ body {
     position: absolute;
     background: #1995EF;
 }
-
 .GlobalImpact{
-    width: 12%;
+    width: 13%;
     height: 6.2963%;
-    left: 3.2292%;
-    top: 1.8%;
+    left: 2%;
+    top: 1.5%;
     position: absolute;
     color: black;
-    font-size: 120.5%; /* Increase the font size */
-    font-family: Inter;
+    font-size: 120%; /* Increase the font size */
     font-weight: 600;
     word-wrap: break-word;
 }
@@ -52,11 +39,10 @@ body {
     width: 10.9375%;
     height: 6.2963%;
     left: 15%;
-    top: 1.8%;
+    top: 1.5%;
     position: absolute;
     color: black;
     font-size: 120.5%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 600;
     word-wrap: break-word;
 }
@@ -64,11 +50,10 @@ body {
     width: 10.9375%;
     height: 6.2963%;
     left: 25%;
-    top: 1.8%;
+    top: 1.5%;
     position: absolute;
     color: black;
     font-size: 120.5%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 600;
     word-wrap: break-word;
 }
@@ -76,23 +61,21 @@ body {
     width: 10.9375%;
     height: 6.2963%;
     left: 33.5%;
-    top: 1.8%;
+    top: 1.5%;
     position: absolute;
     color: black;
     font-size: 120.5%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 600;
     word-wrap: break-word;
 }
 .ContactUs{
     width: 10.9375%;
     height: 6.2963%;
-    left: 43%;
-    top: 1.8%;
+    left: 44%;
+    top: 1.5%;
     position: absolute;
     color: black;
     font-size: 120.5%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 600;
     word-wrap: break-word;
 }
@@ -113,31 +96,28 @@ body {
 
 .text1 {
     left: 50%;
-    top: 15%;
+    top: 12%;
     position: absolute;
     color: black;
     font-size: 300%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 600;
     transform: translate(-50%, -50%);
 }
 .text2 {
-    top: 22%;
+    top: 19%;
     left: 50%;
     position: absolute;
     color: black;
     font-size: 150%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 150;
     transform: translate(-50%, -50%);
 }
 .text3 {
     left: 50%;
-    top: 26%;
+    top: 23.5%;
     position: absolute;
     color: black;
     font-size: 150%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 100;
     transform: translate(-50%, -50%);
 }
@@ -152,11 +132,10 @@ body {
 }
 .Rectangle3{
     left: 20%;
-    top: 40%;
+    top: 42%;
     position: absolute;
     color: black;
     font-size: 100%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 60;
     transform: translate(-50%, -50%);
 }
@@ -170,11 +149,10 @@ body {
 }
 .Rectangle4{
     left: 50%;
-    top: 40%;
+    top: 42%;
     position: absolute;
     color: black;
     font-size: 100%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 60;
     transform: translate(-50%, -50%);
 }
@@ -188,11 +166,10 @@ body {
 }
 .Rectangle5{
     left: 80%;
-    top: 40%;
+    top: 42%;
     position: absolute;
     color: black;
     font-size: 100%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 60;
     transform: translate(-50%, -50%);
 }
@@ -223,19 +200,18 @@ body {
 .text{
     width: 100%;
     height: 6.2963%;
-    left: 40%;
-    top: 53%;
+    left: 36%;
+    top: 55%;
     position: absolute;
-    color: black;
+    color: rgb(218, 38, 146);
     font-size:500%; /* Increase the font size */
-    font-family: Inter;
     font-weight: 600;
     word-wrap: break-word;
 
 }
 .Rect1{
     width: 22%; /* 636px / 1920px * 100% */
-    height: 30%; /* 281px / 1080px * 100% */
+    height: 32%; /* 281px / 1080px * 100% */
     left: 4%;
     top: 65%;
     position: absolute;
@@ -245,7 +221,7 @@ body {
 }
 .Rect3{
     width: 22%; /* 636px / 1920px * 100% */
-    height: 30%; /* 281px / 1080px * 100% */
+    height: 32%; /* 281px / 1080px * 100% */
     left: 72%;
     top: 65%;
     position: absolute;
@@ -280,7 +256,7 @@ body {
     width: 33.85%;
     font-size: 100%;
     left: 4.5%;
-    top: 87%; /* Adjusted the top value */
+    top: 86.5%; /* Adjusted the top value */
     position: absolute; /* Added absolute positioning */
     color : black;
 }
