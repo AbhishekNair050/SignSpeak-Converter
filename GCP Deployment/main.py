@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, jsonify, send_file, make_response
+from flask import Flask, render_template, request, jsonify, make_response
 import numpy as np
 from preprocess import *
 import traceback
 import cv2
 from TextToSign.ASL_scraper import *
+from langchain_google_genai import ChatGoogleGenerativeAI
 import subprocess, ffmpeg
+from test import *
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
@@ -12,7 +14,7 @@ sequence = deque(maxlen=input_shape[1])
 for i in range(input_shape[1]):
     sequence.append(np.zeros((input_shape[2], 3)))
 
-step_length = 60
+step_length = 90
 TIME_PER_STEP = step_length / 30.0
 previous_time = time.time()
 frame_time = time.time()
@@ -22,6 +24,8 @@ global sentence
 sentence = ""
 label = ""
 certainty = 0.0
+
+os.environ["GOOGLE_API_KEY"] = "AIzaSyB1VIUzH3CfLjVGVflRdWG3rIx1t3wOlnE"
 
 
 @app.route("/", methods=["GET"])
@@ -59,19 +63,32 @@ def use():
 
 @app.route("/update_labels_certainty", methods=["POST"])
 def update_labels_certainty():
-    global label, certainty
-    return jsonify({"label": label, "certainty": round(certainty * 100, 2)})
+    global label, certainty, sentence
+    return jsonify(
+        {"label": label, "certainty": round(certainty * 100, 2), "sentence": sentence}
+    )
+
+
+def form_sentence(sequence):
+    hardcoded_prompt = "form proper sentences using these words, these are predicted by a sign language ASL recognition model, give only one output: "
+    sequence = [str(i) for i in sequence]
+    for i in sequence:
+        if i == "None" or i == "undefined":
+            sequence.remove(i)
+    if len(sequence) == 0:
+        return "No proper sentence can be formed"
+    inputt = hardcoded_prompt + " ".join(sequence)
+    llm = ChatGoogleGenerativeAI(model="gemini-pro")
+    result = llm.invoke(inputt)
+    sentence = result.content
+    return sentence
 
 
 @app.route("/process_frame", methods=["POST"])
 def process_frame():
-    global label
-    global certainty
-    global previous_time
-    global frame_time
-    global sequence
-    global sentence
+    global label, certainty, previous_time, frame_time, sequence, sentence
     all_landmarks = []
+    seq = []
     try:
         epsilon = 1e-6
         frame_file = request.files["frame"]
@@ -121,8 +138,13 @@ def process_frame():
             print(f"Label: {label}, Certainty: {certainty * 100:.2f}%")
             previous_time = time.time()
             certainty = round(certainty * 100, 2)
-
-        return jsonify({"label": label, "certainty": certainty})
+            seq.append(label)
+            try:
+                sentence = form_sentence(seq)
+            except Exception as e:
+                sentence = "No proper sentence can be formed"
+            print(f"Sentence: {sentence}")
+        return jsonify({"label": label, "certainty": certainty, "sentence": sentence})
 
     except Exception as e:
         traceback.print_exc()
@@ -139,7 +161,7 @@ def combine_videos(video_paths, output_path, output_size=(640, 480), fps=30):
         while True:
             ret, frame = video.read()
 
-            if not ret:  
+            if not ret:
                 print(f"Finished processing video: {video_path}")
                 break
 
@@ -156,7 +178,6 @@ def combine_videos(video_paths, output_path, output_size=(640, 480), fps=30):
         for frame in frames:
             out.write(frame)
         out.release()
-
         video_list.append(temp_video_path)
 
     audio_path = "stock_audio.mp3"
@@ -167,7 +188,6 @@ def combine_videos(video_paths, output_path, output_size=(640, 480), fps=30):
 
     ffmpeg_cmd = f"ffmpeg -y -f concat -safe 0 -i {video_list_file} -i {audio_path} -c:v libx264 -c:a aac -shortest {output_path}"
     subprocess.run(ffmpeg_cmd, shell=True, check=True)
-
     for video_path in video_list:
         os.remove(video_path)
     os.remove(video_list_file)
@@ -194,24 +214,18 @@ def texttosign():
             videos.append(f"{database_dir}/{i}.mp4")
 
     combined_video_frames = combine_videos(videos, "output.mp4")
-    # cap = cv2.VideoCapture("output.mp4")
-    # # Encode the combined video using cv2.VideoWriter
-    # output_size = (640, 480)  # Adjust the output size as per your requirements
-    # fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    # fps = 30  # Adjust the FPS as per your requirements
-    # out = cv2.VideoWriter("temp.mp4", fourcc, fps, output_size)
+    if combined_video_frames:
+        signvector("output.mp4")
+    if not os.path.exists("final_output.mp4"):
+        print("Error combining videos: Output file not created.")
+        return jsonify({"error": "Error creating combined video"}), 500
 
-    # for frame in combined_video_frames:
-    #     frame = cv2.resize(frame, output_size)  # Resize the frame if needed
-    #     out.write(frame)
-
-    # out.release()
-
-    with open("output.mp4", "rb") as f:
+    with open("final_output.mp4", "rb") as f:
         video_bytes = f.read()
-
-    # os.remove("temp.mp4")
-
+    os.remove("final_output.mp4")
+    os.remove("output.mp4")
+    os.remove("outputnew.mp4")
+    os.remove("original_audio.aac")
     response = make_response(video_bytes)
     response.headers.set("Content-Type", "video/mp4")
     response.headers.set("Content-Disposition", "attachment", filename="output.mp4")
