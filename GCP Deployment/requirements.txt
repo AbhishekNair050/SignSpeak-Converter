@@ -4,3 +4,7 @@ opencv-python
 numpy
 tensorflow==2.7.0
 flask
+langchain_google_genai
+beautifulsoup4
+ffmpeg-python
+moviepy
