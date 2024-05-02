@@ -4,6 +4,7 @@ from preprocess import *
 import traceback
 import cv2
 from TextToSign.ASL_scraper import *
+import subprocess, ffmpeg
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
@@ -129,26 +130,49 @@ def process_frame():
 
 
 def combine_videos(video_paths, output_path, output_size=(640, 480), fps=30):
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # MJPEG codec
-    out = cv2.VideoWriter(output_path, fourcc, fps, output_size)
+    video_list = []
 
     for video_path in video_paths:
         video = cv2.VideoCapture(video_path)
-        while video.isOpened():
+        frames = []
+
+        while True:
             ret, frame = video.read()
-            if ret:
-                frame = cv2.resize(frame, output_size)
-                out.write(frame)
-            else:
+
+            if not ret:  
+                print(f"Finished processing video: {video_path}")
                 break
+
+            frame = cv2.resize(frame, output_size)
+            frames.append(frame)
+
         video.release()
 
-    out.release()
+        temp_video_path = os.path.join(
+            os.path.dirname(output_path), f"temp_{os.path.basename(video_path)}"
+        )
+        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+        out = cv2.VideoWriter(temp_video_path, fourcc, fps, output_size)
+        for frame in frames:
+            out.write(frame)
+        out.release()
+
+        video_list.append(temp_video_path)
+
+    audio_path = "stock_audio.mp3"
+    video_list_file = os.path.join(os.path.dirname(output_path), "video_list.txt")
+    with open(video_list_file, "w") as f:
+        for video_path in video_list:
+            f.write(f"file '{video_path}'\n")
+
+    ffmpeg_cmd = f"ffmpeg -y -f concat -safe 0 -i {video_list_file} -i {audio_path} -c:v libx264 -c:a aac -shortest {output_path}"
+    subprocess.run(ffmpeg_cmd, shell=True, check=True)
+
+    for video_path in video_list:
+        os.remove(video_path)
+    os.remove(video_list_file)
+
     return output_path
-
-
-import cv2
-from flask import Response, jsonify
 
 
 @app.route("/texttosign", methods=["POST"])
