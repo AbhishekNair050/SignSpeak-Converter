@@ -4,12 +4,15 @@ from preprocess import *
 import traceback
 import cv2
 from TextToSign.ASL_scraper import *
-from langchain_google_genai import ChatGoogleGenerativeAI
-import subprocess, ffmpeg
-from test import *
+import google.generativeai as genai
+from signtext import *
+from googletrans import Translator
+from moviepy.editor import VideoFileClip, concatenate_videoclips
+import re
+from google.cloud import *
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
-
+translator = Translator()
 sequence = deque(maxlen=input_shape[1])
 for i in range(input_shape[1]):
     sequence.append(np.zeros((input_shape[2], 3)))
@@ -25,7 +28,7 @@ sentence = ""
 label = ""
 certainty = 0.0
 
-os.environ["GOOGLE_API_KEY"] = "AIzaSyB1VIUzH3CfLjVGVflRdWG3rIx1t3wOlnE"
+api_key = " "
 
 
 @app.route("/", methods=["GET"])
@@ -78,9 +81,10 @@ def form_sentence(sequence):
     if len(sequence) == 0:
         return "No proper sentence can be formed"
     inputt = hardcoded_prompt + " ".join(sequence)
-    llm = ChatGoogleGenerativeAI(model="gemini-pro")
-    result = llm.invoke(inputt)
-    sentence = result.content
+    genai.configure(api_key=api_key)
+    llm = genai.GenerativeModel("gemini-pro")
+    result = llm.generate_content(inputt)
+    sentence = result.text
     return sentence
 
 
@@ -152,45 +156,18 @@ def process_frame():
 
 
 def combine_videos(video_paths, output_path, output_size=(640, 480), fps=30):
-    video_list = []
+    video_clips = []
 
     for video_path in video_paths:
-        video = cv2.VideoCapture(video_path)
-        frames = []
+        clip = VideoFileClip(video_path)
+        if clip.size != output_size:
+            clip = clip.resize(output_size)
+        video_clips.append(clip)
 
-        while True:
-            ret, frame = video.read()
+    final_clip = concatenate_videoclips(video_clips)
 
-            if not ret:
-                print(f"Finished processing video: {video_path}")
-                break
-
-            frame = cv2.resize(frame, output_size)
-            frames.append(frame)
-
-        video.release()
-
-        temp_video_path = os.path.join(
-            os.path.dirname(output_path), f"temp_{os.path.basename(video_path)}"
-        )
-        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-        out = cv2.VideoWriter(temp_video_path, fourcc, fps, output_size)
-        for frame in frames:
-            out.write(frame)
-        out.release()
-        video_list.append(temp_video_path)
-
-    audio_path = "stock_audio.mp3"
-    video_list_file = os.path.join(os.path.dirname(output_path), "video_list.txt")
-    with open(video_list_file, "w") as f:
-        for video_path in video_list:
-            f.write(f"file '{video_path}'\n")
-
-    ffmpeg_cmd = f"ffmpeg -y -f concat -safe 0 -i {video_list_file} -i {audio_path} -c:v libx264 -c:a aac -shortest {output_path}"
-    subprocess.run(ffmpeg_cmd, shell=True, check=True)
-    for video_path in video_list:
-        os.remove(video_path)
-    os.remove(video_list_file)
+    # Save the final clip to the output path
+    final_clip.write_videofile(output_path, fps=fps, codec="libx264", audio_codec="aac")
 
     return output_path
 
@@ -199,6 +176,10 @@ def combine_videos(video_paths, output_path, output_size=(640, 480), fps=30):
 def texttosign():
     videos = []
     sentence = request.json.get("sentence", "")
+    if re.match("^[a-zA-Z]*$", sentence):
+        sentence = sentence.lower()
+    else:
+        sentence = translator.translate(sentence, dest="en").text.lower()
     database_dir = "database"
     word = sentence.split(" ")
 
@@ -216,19 +197,17 @@ def texttosign():
     combined_video_frames = combine_videos(videos, "output.mp4")
     if combined_video_frames:
         signvector("output.mp4")
-    if not os.path.exists("final_output.mp4"):
-        print("Error combining videos: Output file not created.")
-        return jsonify({"error": "Error creating combined video"}), 500
+    if not os.path.exists("outputnew.gif"):
+        print("Error creating GIF: Output file not created.")
+        return jsonify({"error": "Error creating GIF"}), 500
 
-    with open("final_output.mp4", "rb") as f:
-        video_bytes = f.read()
-    os.remove("final_output.mp4")
+    with open("outputnew.gif", "rb") as f:
+        gif_bytes = f.read()
     os.remove("output.mp4")
-    os.remove("outputnew.mp4")
-    os.remove("original_audio.aac")
-    response = make_response(video_bytes)
-    response.headers.set("Content-Type", "video/mp4")
-    response.headers.set("Content-Disposition", "attachment", filename="output.mp4")
+    os.remove("outputnew.gif")
+    response = make_response(gif_bytes)
+    response.headers.set("Content-Type", "image/gif")
+    response.headers.set("Content-Disposition", "attachment", filename="output.gif")
     return response
 
 
