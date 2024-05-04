@@ -2,9 +2,10 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import subprocess
+import imageio
 
 
-def signvector(inputpath, output="outputnew.mp4"):
+def signvector(inputpath, output="outputnew.gif"):
     mp_hands = mp.solutions.hands
     mp_pose = mp.solutions.pose
     mp_face_mesh = mp.solutions.face_mesh
@@ -22,78 +23,14 @@ def signvector(inputpath, output="outputnew.mp4"):
     # Video input and output paths
     video_path = inputpath  # Replace with your video path
     output_path = output  # Replace with desired output path
-    audio_extraction_cmd = (
-        f"ffmpeg -y -i {inputpath} -vn -acodec copy original_audio.aac"
-    )
-    subprocess.run(audio_extraction_cmd, shell=True)
+    # audio_extraction_cmd = (
+    #     f"ffmpeg -y -i {inputpath} -vn -acodec copy original_audio.aac"
+    # )
+    # subprocess.run(audio_extraction_cmd, shell=True)
     # Read video capture
     cap = cv2.VideoCapture(video_path)
 
-    # Define video writer for output
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # Video codec
-    width, height = (
-        int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
-        int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)),
-    )
-    video_writer = cv2.VideoWriter(
-        output_path, fourcc, cap.get(cv2.CAP_PROP_FPS), (width, height)
-    )
-
-    # Filtered face landmarks indices
-    filtered_face = [
-        4,
-        6,
-        8,
-        9,
-        33,
-        37,
-        40,
-        46,
-        52,
-        55,
-        61,
-        70,
-        80,
-        82,
-        84,
-        87,
-        88,
-        91,
-        105,
-        107,
-        133,
-        145,
-        154,
-        157,
-        159,
-        161,
-        163,
-        263,
-        267,
-        270,
-        276,
-        282,
-        285,
-        291,
-        300,
-        310,
-        312,
-        314,
-        317,
-        318,
-        321,
-        334,
-        336,
-        362,
-        374,
-        381,
-        384,
-        386,
-        388,
-        390,
-        468,
-        473,
-    ]
+    frames = []
 
     while True:
         ret, img = cap.read()
@@ -105,9 +42,7 @@ def signvector(inputpath, output="outputnew.mp4"):
         results_pose = pose.process(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
         results_face_mesh = face_mesh.process(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
-        op_img = np.zeros([height, width, 3], dtype=np.uint8)
-        # black fill
-        op_img.fill(0)
+        op_img = np.zeros_like(img)
 
         if results_hands.multi_hand_landmarks:
             for hand_landmarks in results_hands.multi_hand_landmarks:
@@ -117,15 +52,18 @@ def signvector(inputpath, output="outputnew.mp4"):
                     hand_landmarks,
                     mp_hands.HAND_CONNECTIONS,
                     landmark_drawing_spec=mp_drawing.DrawingSpec(
-                        color=(255, 0, 0), thickness=2, circle_radius=2
+                        color=(255, 0, 0), thickness=2, circle_radius=1
                     ),
                     connection_drawing_spec=mp_drawing.DrawingSpec(
-                        color=(0, 255, 0), thickness=2, circle_radius=1
+                        color=(0, 255, 0), thickness=2, circle_radius=0.5
                     ),
                 )
 
                 landmarks_np = np.array(
-                    [(lm.x * width, lm.y * height) for lm in hand_landmarks.landmark]
+                    [
+                        (lm.x * img.shape[1], lm.y * img.shape[0])
+                        for lm in hand_landmarks.landmark
+                    ]
                 )
 
                 for i in range(len(landmarks_np) - 1):
@@ -147,27 +85,166 @@ def signvector(inputpath, output="outputnew.mp4"):
                 mp_draw.DrawingSpec((255, 0, 255), 3, 1),
             )
 
+        # Use the provided list of filtered face landmarks
+        filtered_face = [
+            0,
+            4,
+            7,
+            8,
+            10,
+            13,
+            14,
+            17,
+            21,
+            33,
+            37,
+            39,
+            40,
+            46,
+            52,
+            53,
+            54,
+            55,
+            58,
+            61,
+            63,
+            65,
+            66,
+            67,
+            70,
+            78,
+            80,
+            81,
+            82,
+            84,
+            87,
+            88,
+            91,
+            93,
+            95,
+            103,
+            105,
+            107,
+            109,
+            127,
+            132,
+            133,
+            136,
+            144,
+            145,
+            146,
+            148,
+            149,
+            150,
+            152,
+            153,
+            154,
+            155,
+            157,
+            158,
+            159,
+            160,
+            161,
+            162,
+            163,
+            172,
+            173,
+            176,
+            178,
+            181,
+            185,
+            191,
+            234,
+            246,
+            249,
+            251,
+            263,
+            267,
+            269,
+            270,
+            276,
+            282,
+            283,
+            284,
+            285,
+            288,
+            291,
+            293,
+            295,
+            296,
+            297,
+            300,
+            308,
+            310,
+            311,
+            312,
+            314,
+            317,
+            318,
+            321,
+            323,
+            324,
+            332,
+            334,
+            336,
+            338,
+            356,
+            361,
+            362,
+            365,
+            373,
+            374,
+            375,
+            377,
+            378,
+            379,
+            380,
+            381,
+            382,
+            384,
+            385,
+            386,
+            387,
+            388,
+            389,
+            390,
+            397,
+            398,
+            400,
+            402,
+            405,
+            409,
+            415,
+            454,
+            466,
+            468,
+            473,
+        ]
+
+        # Loop over the detected face landmarks
         if results_face_mesh.multi_face_landmarks:
             for face_landmarks in results_face_mesh.multi_face_landmarks:
-                mp_drawing = mp.solutions.drawing_utils
-                mp_drawing.draw_landmarks(
-                    op_img,
-                    face_landmarks,
-                    mp_face_mesh.FACEMESH_TESSELATION,
-                    landmark_drawing_spec=None,  # Disable landmark drawing
-                    connection_drawing_spec=mp_drawing.DrawingSpec(
-                        color=(0, 255, 0), thickness=1, circle_radius=1
-                    ),
-                )
+                # Draw filtered face landmarks with small circles
+                for landmark_idx in filtered_face:
+                    try:
+                        landmark_pt = face_landmarks.landmark[landmark_idx]
+                        landmark_px = int(landmark_pt.x * img.shape[1])
+                        landmark_py = int(landmark_pt.y * img.shape[0])
+                        cv2.circle(
+                            op_img,
+                            (landmark_px, landmark_py),
+                            radius=1,
+                            color=(0, 255, 0),
+                            thickness=-1,
+                        )
+                    except:
+                        pass
 
-        video_writer.write(op_img)
-        if cv2.waitKey(5) & 0xFF == ord("q"):
-            break
-    video_writer.release()
-    # save as output.mp4
-    combine_audio_cmd = f"ffmpeg -y -i {output_path} -i original_audio.aac -c:v libx264 -c:a aac -shortest final_output.mp4"
-    subprocess.run(combine_audio_cmd, shell=True)
-    # subprocess.run("rm original_audio.aac", shell=True)
+        frames.append(op_img)
+
     cap.release()
-    # video_writer.release()
     cv2.destroyAllWindows()
+
+    imageio.mimsave(output_path, frames, fps=30)
+
+    return output_path
