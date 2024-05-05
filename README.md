@@ -42,6 +42,7 @@ SignSpeak/
   - `static`: Stores CSS files and images.
   - `templates`: Stores HTML files and assets (models and other necessary files).
   - `main.py`: Flask application for handling the web server and real-time sign language translation.
+  - `signtext.py`: Text to Sign avatar creation
   - `app.yaml`: Configuration file for App Engine deployment.
   - `requirements.txt`: Python dependencies.
 - **frontend**: Contains HTML and CSS files for the web interface.
@@ -62,7 +63,7 @@ SignSpeak/
 5. **Create Avatar as a GIF**: Using the extracted landmarks, an animated avatar is rendered as a GIF, performing the sign language gestures corresponding to the input sentence.
 6. **Display the GIF**: The generated GIF animation is presented to the user as the visual representation of the input text in sign language.
 
-### Real-Time Inference (Text-to-Sign) Feature
+### Real-Time Inference
 
 1. **Website Inference**: The real-time inference process is initiated from the application's web interface.
 2. **Capture from Webcam**: The user's sign language gestures are captured in real-time through the device's webcam.
@@ -76,7 +77,18 @@ SignSpeak/
 10. **Predict the Label**: The LLM continuously predicts the most likely label (word or gesture) based on the input frames.
 11. **Display it in the Website**: The translated text output from the LLM is displayed in real-time on the application's web interface, providing the user with the textual interpretation of their sign language gestures.
 
+### Text to Sign
+The Text-to-Sign feature of SignSpeak Converter allows users to input a text sentence and receive a GIF animation of an avatar signing the corresponding gestures. The process involves the following steps:
+1. **Input Sentence**: The user provides a textual sentence as input to the application.
+2. **Split the Word and Download Videos**: The sentence is tokenized into individual words, and pre-recorded sign language video clips for each word are downloaded from a database or repository.
+3. **Combine Videos**: The individual word videos are concatenated to form a single continuous video representing the entire input sentence in sign language.
+4. **Extract Landmarks**: Computer vision techniques are employed to detect and extract facial landmarks and hand keypoints from the combined video.
+5. **Create Avatar as a GIF**: Using the extracted landmarks, an animated avatar is rendered as a GIF, performing the sign language gestures corresponding to the input sentence.
+6. **Display the GIF**: The generated GIF animation is presented to the user as the visual representation of the input text in sign language.
+[Untitled design](https://github.com/AbhishekNair050/SignSpeak-Converter/assets/114457983/416999cc-245e-49bc-992a-02cba39e5d9a)
+
 ## Installation
+
 
 1. Clone the repository:
 
