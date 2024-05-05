@@ -1,3 +1,4 @@
+/* Reset some default styles */
 body, h1, h2, h3, p, margin, padding {
     margin: 0;
     padding: 0;
@@ -131,7 +132,7 @@ body, h1, h2, h3, p, margin, padding {
     line-height: 80%;
     word-wrap: break-word;
     font-size: 155%;
-    top : 28%;
+    top : 31%;
     left : 20%;
 }
 .PriyanshiFuriya9137027042PriyanshiFuriya010NmimsEduIn {
@@ -141,7 +142,7 @@ body, h1, h2, h3, p, margin, padding {
     line-height: 72%;
     word-wrap: break-word;
     font-size: 155%;
-    top : 68%;
+    top : 72%;
     left : 20%;
 }
 
@@ -219,4 +220,109 @@ body, h1, h2, h3, p, margin, padding {
     left: 16%;
     top: 87%;
     position: absolute;
+}
+
+@media only screen and (max-width: 1080px) { .Desktop1, .Screenshot, .Welcome, .An 
+    { width: auto; height: auto; left: auto; top: auto; position: static; font-size: inherit; }
+    .Button {
+        margin: 10px auto;
+        font-size: 8px;
+        display: inline-block;
+    }
+    .Rectangle2
+    {
+        width: 100%;
+        height: 7cqb;
+        left: 0;
+        top: 0;
+        position: absolute;
+        background: #1995EF;
+    }
+    .GlobalImpact{
+        left : -3%; 
+        width: 100%;
+        top: 0.5%;
+    }
+    .OurVision{
+        left: 20%;
+        width: 100%;
+        top: 0.5%;
+    }
+    .TryNow
+    {
+        left: 40%;
+        width: 100%;
+        top: 0.5%;
+    }
+    .Use
+    {
+        left: 60%;
+        width: 100%;
+        top: 0.5%;
+    }
+    .ContactUs
+    {
+        left: 80%;
+        width: 100%;
+        top: 0.5%;
+    }
+    .AbhishekNair9930508280AbhishekNair050NmimsEduIn,.Contact
+    {
+        top: 15%;
+        font-size: 12px;
+    }
+    .PriyanshiFuriya9137027042PriyanshiFuriya010NmimsEduIn
+    {
+        font-size: 12px;
+    }
+    .Icons8Phone1001
+    {
+        top: 17%;
+    }
+    .Icons8Email10011
+    {
+        top: 20%;
+    }
+    .HttpsGithubComAbhisheknair050
+    {
+        top: 24%;
+        font-size: 12px;
+    }
+    .Icons8Github901
+    {
+        top: 23%;
+    }
+    .AbhishekNairRemovebgPreview1
+    {
+        top: 26%;
+        left: 20%;
+        width: 50%;
+    }
+    .PriyanshiFuriya9137027042PriyanshiFuriya010NmimsEduIn
+    {
+        top: 60%;
+    }
+    .Icons8Phone1002
+    {
+        top: 61.5%;
+    }
+    .Icons8Email10012
+    {
+        top: 64.2%;
+    }
+    .HttpsGithubComPriyanshiFuriya
+    {
+        top: 66.6%;
+        font-size: 12px;
+    }
+    .Icons8Github902
+    {
+        top: 66.9%;
+    }
+    .PriyanshiFuriya1
+    {
+        top: 70%;
+        left: 20%;
+        width: 50%;
+    }
 }
