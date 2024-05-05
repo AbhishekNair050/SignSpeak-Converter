@@ -2,11 +2,12 @@
 
 SignSpeak Converter is a web application that translates sign language gestures into text in real-time using machine learning models. The project aims to bridge the communication gap between the deaf and hearing communities, making conversations more accessible and inclusive.
 
-the application can be accessed at - https://team-signsync.appspot.com/
+the application can be accessed at - https://project-signspeak.appspot.com/
 
 ## Table of Contents
 
 - [Project Structure](#project-structure)
+- [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Models](#models)
@@ -50,6 +51,30 @@ SignSpeak/
 - **SignSpeak.ipynb**: Main Jupyter Notebook for data preprocessing, model training, and evaluation.
 - **preprocess**: Contains utility functions for preprocessing data and extracting landmarks.
 - **livelandmarks**: Contains utility functions for live landmark extraction (used in `main.py`).
+  
+## Features
+### Sign-to-Text Conversion Pipeline
+
+1. **Input Sentence**: The user provides a textual sentence as input to the application.
+2. **Split the Word and Download Videos**: The sentence is tokenized into individual words, and pre-recorded sign language video clips for each word are downloaded from a database or repository.
+3. **Combine Videos**: The individual word videos are concatenated to form a single continuous video representing the entire input sentence in sign language.
+4. **Extract Landmarks**: Computer vision techniques are employed to detect and extract facial landmarks and hand keypoints from the combined video.
+5. **Create Avatar as a GIF**: Using the extracted landmarks, an animated avatar is rendered as a GIF, performing the sign language gestures corresponding to the input sentence.
+6. **Display the GIF**: The generated GIF animation is presented to the user as the visual representation of the input text in sign language.
+
+### Real-Time Inference (Text-to-Sign) Feature
+
+1. **Website Inference**: The real-time inference process is initiated from the application's web interface.
+2. **Capture from Webcam**: The user's sign language gestures are captured in real-time through the device's webcam.
+3. **Send it to Backend Frame by Frame**: The webcam feed is segmented into individual frames, which are transmitted to the backend server for processing.
+4. **Decode the Bytes**: The received frames are decoded from their byte representation into a format suitable for further processing.
+5. **Process the Frames**: The decoded frames undergo pre-processing steps, such as normalization and augmentation, to enhance the quality of the input data.
+6. **LLM Gemini Pro**: A large language model (LLM), specifically the Gemini Pro model, is employed for sign language gesture recognition and translation.
+7. **Form Coherent Sentences**: The LLM processes the input frames and forms coherent sentences by recognizing and interpreting the sign language gestures.
+8. **Add the Words to the Sequence**: As the LLM processes each frame, it appends the recognized words to a sequence, building the complete translated sentence incrementally.
+9. **Update Label, Certainty, Sentence**: The LLM updates the predicted label (the recognized word or gesture), the certainty score associated with the prediction, and the current state of the translated sentence.
+10. **Predict the Label**: The LLM continuously predicts the most likely label (word or gesture) based on the input frames.
+11. **Display it in the Website**: The translated text output from the LLM is displayed in real-time on the application's web interface, providing the user with the textual interpretation of their sign language gestures.
 
 ## Installation
 
@@ -58,8 +83,11 @@ SignSpeak/
 ```
 git clone https://github.com/AbhishekNair050/SignSpeak-Converter
 ```
-
-2. Install the required Python packages:
+2. Go to "GCP Deployment"
+```
+cd "../GCP Deployment"
+```
+3. Install the required Python packages:
 
 ```
 pip install -r requirements.txt
@@ -74,12 +102,16 @@ python main.py
 ```
 
 2. Open your web browser and navigate to `http://localhost:5000`.
+
 3. Allow access to your webcam when prompted.
-4. Go to http://localhost:5000/trynow and Start signing, the application will translate your gestures into text in real-time.
 
-`main.py` is the Flask application responsible for setting up the web server and handling the real-time sign language translation process. It receives video frames from the client, processes them to extract landmarks, and performs sign language translation using our pre-trained model. The translated label and the associated certainty are then returned to the client as a JSON response.
+4. Go to http://localhost:5000/trynow and you will see two sections:
+   - **Sign to Text**: Start signing, the application will translate your gestures into text in real-time.
+   - **Text to Sign**: Enter a text sentence, and the application will generate a GIF animation of an avatar signing the corresponding gestures.
 
-The application is also deployed on Google Cloud Platform (GCP) and can be accessed at https://team-signsync.appspot.com/.
+`main.py` is the Flask application responsible for setting up the web server and handling the real-time sign language translation process. It receives video frames from the client, processes them to extract landmarks, and performs sign language translation using our pre-trained model. The translated label and the associated certainty are then returned to the client as a JSON response. These labels are added to a sequence which is then feeded to Gemini Pro to form actual sentences. Additionally, it handles the text-to-sign feature by tokenizing the input text, retrieving pre-recorded sign language videos for each word, and combining them into a single GIF animation.
+
+The application is also deployed on Google Cloud Platform (GCP) and can be accessed at https://project-signspeak.appspot.com/
 
 ## Models
 The model architecture is based on a transformer structure with convolutional and self-attention blocks. Here are the key components:
