@@ -97,7 +97,7 @@ the Word and Download Videos**: The sentence is tokenized into individual words,
 1. Clone the repository:
 
 ```
-git clone https://github.com/AbhishekNair050/SignSpeak-Converter
+git clone https://github.com/AbhishekNair050/SignSpeak-Converter.git
 ```
 2. Go to "GCP Deployment"
 ```
@@ -110,18 +110,19 @@ pip install -r requirements.txt
 ```
 
 ## Usage
-
-1. Run the Flask application from /GCP Deployment:
+1. Due to storage read/write permission issue on GCP deployment, we implemented a direct read write from Google Cloud Storage. While running on localhost, comment the `combine_video` function in `main.py` and uncomment the function below it. Also comment the Cloud Storage implementation in `signtext.py` for it to work on your local machine
+   
+2. Run the Flask application from /GCP Deployment:
 
 ```
 python main.py
 ```
 
-2. Open your web browser and navigate to `http://localhost:5000`.
+3. Open your web browser and navigate to `http://localhost:5000`.
 
-3. Allow access to your webcam when prompted.
+4. Allow access to your webcam when prompted.
 
-4. Go to http://localhost:5000/trynow and you will see two sections:
+5. Go to http://localhost:5000/trynow and you will see two sections:
    - **Sign to Text**: Start signing, the application will translate your gestures into text in real-time.
    - **Text to Sign**: Enter a text sentence, and the application will generate a GIF animation of an avatar signing the corresponding gestures.
 
@@ -240,6 +241,9 @@ The labels (glosses) are encoded as integers using a mapping dictionary. The `gl
 
 The FastText library is used to filter the labels based on their semantic similarity to a set of predefined words related to the target domain (e.g., taxi-related words). This step helps to reduce the number of classes and improve model performance by focusing on the most relevant labels.
 
+## Text To Sign
+The Text-to-Sign feature involves tokenizing the input text sentence into individual words, retrieving pre-recorded sign language video clips for each word from a database, concatenating these videos into a single continuous video representation, extracting relevant landmarks (hand keypoints, body pose, facial features) using computer vision techniques, rendering an animated avatar mimicking the sign language gestures and facial expressions based on the extracted landmarks, compiling the rendered animations into a GIF file, and ultimately displaying the GIF animation to the user as the visual interpretation of their input text in sign language.
+
 ## Deployment
 
 The application is deployed on Google Cloud Platform (GCP) using App Engine and can be accessed on https://team-signsync.appspot.com/. The deployment files are located in the `GCP Deployment` directory.
@@ -258,9 +262,10 @@ gcloud app deploy
 4. After successful deployment, the application will be accessible at the provided URL (https://`your-project-id`.appspot.com/).
 
 ## Future Plan
-- Enhance model accuracy through architecture tweaks and more training data.
-- Expand glossary coverage to boost vocabulary.
-- Optimize inference speed via quantization and compression. 
-- Refine UI/UX for smoother user experience.
-- Build mobile apps/make the website mobile accessible on iOS and Android for wider access.
+- Expand language support by incorporating datasets for additional sign languages used globally.
+- Enhance enterprise integration by providing well-documented APIs and SDKs, allowing organizations to seamlessly integrate SignSpeak Converter's features into their existing systems and applications.
+- Explore edge computing and serverless architectures to improve latency and responsiveness, enabling real-time sign language translation with minimal delays.
+- Implement advanced caching mechanisms and content delivery networks (CDNs) to optimize data retrieval and reduce bandwidth consumption, ensuring a smooth experience even in low-bandwidth environments.
+- Develop a browser extension to provide seamless access to the text-to-sign feature directly within web browsers, enhancing accessibility and usability for daily online activities.
+- Collaborate with sign language experts, linguists, and the deaf community to continuously refine and improve the accuracy and naturalness of the sign language translations and avatar animations.
 
