@@ -11,6 +11,8 @@ from moviepy.editor import VideoFileClip, concatenate_videoclips
 import re
 from google.cloud import *
 
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
+
 app = Flask(__name__, static_folder="static", template_folder="templates")
 translator = Translator()
 sequence = deque(maxlen=input_shape[1])
@@ -28,7 +30,7 @@ sentence = ""
 label = ""
 certainty = 0.0
 
-api_key = " "
+api_key = "AIzaSyB1VIUzH3CfLjVGVflRdWG3rIx1t3wOlnE"
 
 
 @app.route("/", methods=["GET"])
@@ -155,7 +157,17 @@ def process_frame():
         return jsonify({"error": str(e)}), 500
 
 
-def combine_videos(video_paths, output_path, output_size=(640, 480), fps=30):
+from google.cloud import storage
+import tempfile
+
+
+def combine_videos(
+    video_paths,
+    output_size=(640, 480),
+    fps=30,
+    bucket_name="staging.signtesti.appspot.com",
+    output_blob_name="output.mp4",
+):
     video_clips = []
 
     for video_path in video_paths:
@@ -166,10 +178,17 @@ def combine_videos(video_paths, output_path, output_size=(640, 480), fps=30):
 
     final_clip = concatenate_videoclips(video_clips)
 
-    # Save the final clip to the output path
-    final_clip.write_videofile(output_path, fps=fps, codec="libx264", audio_codec="aac")
-
-    return output_path
+    with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as temp_file:
+        temp_file_path = temp_file.name
+        final_clip.write_videofile(
+            temp_file_path, fps=fps, codec="libx264", audio_codec="aac"
+        )
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(output_blob_name)
+    blob.upload_from_filename(temp_file_path)
+    os.remove(temp_file_path)
+    return f"gs://{bucket_name}/{output_blob_name}"
 
 
 @app.route("/texttosign", methods=["POST"])
@@ -194,17 +213,12 @@ def texttosign():
         else:
             videos.append(f"{database_dir}/{i}.mp4")
 
-    combined_video_frames = combine_videos(videos, "output.mp4")
+    combined_video_frames = combine_videos(videos)
     if combined_video_frames:
-        signvector("output.mp4")
-    if not os.path.exists("outputnew.gif"):
-        print("Error creating GIF: Output file not created.")
-        return jsonify({"error": "Error creating GIF"}), 500
+        gif_bytes = signvector()
 
-    with open("outputnew.gif", "rb") as f:
-        gif_bytes = f.read()
-    os.remove("output.mp4")
-    os.remove("outputnew.gif")
+    # os.remove("output.mp4")
+    # os.remove("outputnew.gif")
     response = make_response(gif_bytes)
     response.headers.set("Content-Type", "image/gif")
     response.headers.set("Content-Disposition", "attachment", filename="output.gif")
