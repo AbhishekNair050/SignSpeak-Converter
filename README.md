@@ -255,7 +255,7 @@ To deploy the application, follow these steps:
 
 1. Install the Google Cloud SDK and initialize it with your GCP project.
 2. Navigate to the `GCP Deployment` directory.
-3. Change the configuration in app.yaml as per your requirement, we went with the app engine standard environment F2 instance
+3. Change the configuration in app.yaml as per your requirement, we went with the app engine standard environment F4 instance
 4. Run the following command to deploy the application:
 
 ```
