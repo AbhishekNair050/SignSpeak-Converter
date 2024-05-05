@@ -3,9 +3,14 @@ import mediapipe as mp
 import numpy as np
 import subprocess
 import imageio
+from google.cloud import storage
+import io, os
+import tempfile
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
 
 
-def signvector(inputpath, output="outputnew.gif"):
+def signvector(inputpath="output.mp4", output="outputnew.gif"):
     mp_hands = mp.solutions.hands
     mp_pose = mp.solutions.pose
     mp_face_mesh = mp.solutions.face_mesh
@@ -19,17 +24,16 @@ def signvector(inputpath, output="outputnew.gif"):
     face_mesh = mp_face_mesh.FaceMesh(
         min_detection_confidence=0.5, min_tracking_confidence=0.5
     )
+    video_path = inputpath
+    output_path = output
 
-    # Video input and output paths
-    video_path = inputpath  # Replace with your video path
-    output_path = output  # Replace with desired output path
-    # audio_extraction_cmd = (
-    #     f"ffmpeg -y -i {inputpath} -vn -acodec copy original_audio.aac"
-    # )
-    # subprocess.run(audio_extraction_cmd, shell=True)
-    # Read video capture
-    cap = cv2.VideoCapture(video_path)
-
+    storage_client = storage.Client()
+    bucket = storage_client.bucket("staging.signtesti.appspot.com")
+    blob = bucket.blob("output.mp4")
+    with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as temp_file:
+        temp_file_path = temp_file.name
+        blob.download_to_filename(temp_file_path)
+    cap = cv2.VideoCapture(temp_file_path)
     frames = []
 
     while True:
@@ -220,11 +224,8 @@ def signvector(inputpath, output="outputnew.gif"):
             468,
             473,
         ]
-
-        # Loop over the detected face landmarks
         if results_face_mesh.multi_face_landmarks:
             for face_landmarks in results_face_mesh.multi_face_landmarks:
-                # Draw filtered face landmarks with small circles
                 for landmark_idx in filtered_face:
                     try:
                         landmark_pt = face_landmarks.landmark[landmark_idx]
@@ -245,6 +246,15 @@ def signvector(inputpath, output="outputnew.gif"):
     cap.release()
     cv2.destroyAllWindows()
 
-    imageio.mimsave(output_path, frames, fps=30)
+    gif_bytes = io.BytesIO()
+    writer = imageio.get_writer(gif_bytes, format="gif", fps=30)
 
-    return output_path
+    for frame in frames:
+        writer.append_data(frame)
+
+    writer.close()
+    print("GIF created successfully")
+    return gif_bytes.getvalue()
+
+
+signvector()
