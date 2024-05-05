@@ -30,7 +30,7 @@ sentence = ""
 label = ""
 certainty = 0.0
 
-api_key = "AIzaSyB1VIUzH3CfLjVGVflRdWG3rIx1t3wOlnE"
+api_key = " "
 
 
 @app.route("/", methods=["GET"])
