@@ -3,7 +3,9 @@
 SignSpeak Converter is a web application that translates sign language gestures into text in real-time using machine learning models. The project aims to bridge the communication gap between the deaf and hearing communities, making conversations more accessible and inclusive.
 
 the application can be accessed at - https://project-signspeak.appspot.com/
-
+**disclaimer -** 
+- It takes time to boot for the first time due to automatic scaling.
+- due to limited redource, text to sign only works with one word as of now on this deployment, with more words, the response time is too high casing the process to die.
 ## Table of Contents
 
 - [Project Structure](#project-structure)
@@ -246,7 +248,7 @@ The Text-to-Sign feature involves tokenizing the input text sentence into indivi
 
 ## Deployment
 
-The application is deployed on Google Cloud Platform (GCP) using App Engine and can be accessed on https://team-signsync.appspot.com/. The deployment files are located in the `GCP Deployment` directory.
+The application is deployed on Google Cloud Platform (GCP) using App Engine and can be accessed on https://project-signspeak.appspot.com/ . The deployment files are located in the `GCP Deployment` directory.
 
 To deploy the application, follow these steps:
 
