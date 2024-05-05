@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="static/trynow.css">
 </head>
 <body>
-    <!-- Initial div and links -->
     <div class="Rectangle2"></div>
     <div class="GlobalImpact">
         <a href="impact" class="Button">Global Impact</a>
@@ -55,7 +54,7 @@
     <div class="section-container" id="section2Container">
         <section id="section2">
             <div class="box4">
-                <video id="outputVideo" autoplay playsinline muted></video>
+                <img id="outputVideo" src="" alt="Output GIF">
             </div>
             <div id="inputOptions">
                 <input type="text" id="textInput" placeholder="Type your text">
@@ -189,48 +188,35 @@
                 fetch('/texttosign', {
                     method: 'POST',
                     headers: {
-                    'Content-Type': 'application/json',
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ sentence: textInput }),
                 })
-                    .then(response => {
+                .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to combine videos');
                     }
-                    return response.arrayBuffer(); 
-                    })
-                    .then(data => {
-                    const videoElement = document.getElementById('outputVideo');
-                    const blob = new Blob([data], { type: 'video/mp4' }); 
-                    console.log('Blob created:', blob); // Log Blob details for debugging
+                    return response.arrayBuffer();
+                })
+                .then(data => {
+                    const imgElement = document.getElementById('outputVideo');
+                    const blob = new Blob([data], { type: 'image/gif' }); 
+                    console.log('Blob created:', blob); 
 
-                    const videoUrl = URL.createObjectURL(blob); 
-                    videoElement.src = videoUrl;
+                    const imgUrl = URL.createObjectURL(blob); // Create a URL for the Blob
+                    imgElement.src = imgUrl;
 
-                    videoElement.addEventListener('error', error => {
-                        console.error('Error playing video:', error);
-                        // Handle specific error types (e.g., network errors, decoding errors)
-                    });
+                    // Ensure the image is loaded before displaying it
+                    imgElement.onload = () => {
+                        console.log('Image loaded successfully');
+                    };
 
-                    videoElement.addEventListener('canplaythrough', () => {
-                        videoElement.play()
-                        .then(() => console.log('Video started playing'))
-                        .catch(error => console.error('Error playing video:', error));
-                    });
-
-                    // Add a timeout to handle cases where 'canplaythrough' doesn't fire
-                    setTimeout(() => {
-                        if (!videoElement.paused && !videoElement.ended) {
-                        console.log('Video playing successfully');
-                        } else {
-                        console.error('Error playing video (timeout)');
-                        }
-                    }, 5000); // Adjust timeout as needed
-                    })
-                    .catch(error => console.error('Error combining videos:', error));
+                    imgElement.onerror = error => {
+                        console.error('Error loading image:', error);
+                    };
+                })
+                .catch(error => console.error('Error combining videos:', error));
             }
-
-
     </script>
 </body>
 </html>
