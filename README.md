@@ -85,7 +85,8 @@ The Text-to-Sign feature of SignSpeak Converter allows users to input a text sen
 4. **Extract Landmarks**: Computer vision techniques are employed to detect and extract facial landmarks and hand keypoints from the combined video.
 5. **Create Avatar as a GIF**: Using the extracted landmarks, an animated avatar is rendered as a GIF, performing the sign language gestures corresponding to the input sentence.
 6. **Display the GIF**: The generated GIF animation is presented to the user as the visual representation of the input text in sign language.
-[Untitled design](https://github.com/AbhishekNair050/SignSpeak-Converter/assets/114457983/416999cc-245e-49bc-992a-02cba39e5d9a)
+
+![Untitled design](https://github.com/AbhishekNair050/SignSpeak-Converter/assets/114457983/12c98b5d-e03a-43cd-b6a4-faa7f632cf60)
 
 ## Installation
 
