@@ -19,7 +19,7 @@ sequence = deque(maxlen=input_shape[1])
 for i in range(input_shape[1]):
     sequence.append(np.zeros((input_shape[2], 3)))
 
-step_length = 90
+step_length = 60
 TIME_PER_STEP = step_length / 30.0
 previous_time = time.time()
 frame_time = time.time()
