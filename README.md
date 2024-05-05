@@ -43,6 +43,7 @@ SignSpeak/
 - **GCP Deployment**: Contains files for deploying the application on Google Cloud Platform (GCP).
   - `static`: Stores CSS files and images.
   - `templates`: Stores HTML files and assets (models and other necessary files).
+  - `assets`: contains all the model and the certainity files. New Test model has the model trained on all words of the dataset which has not been used due to poor performance on real time data, but it performs fine when given a video input
   - `main.py`: Flask application for handling the web server and real-time sign language translation.
   - `signtext.py`: Text to Sign avatar creation
   - `app.yaml`: Configuration file for App Engine deployment.
@@ -262,6 +263,8 @@ gcloud app deploy
 ```
 
 4. After successful deployment, the application will be accessible at the provided URL (https://`your-project-id`.appspot.com/).
+
+#### New Test model in GCP deployment has the model trained on all words of the dataset which has not been used due to poor performance on real time data accprding to the feedbacks received, but it performs fine when given a video input.
 
 ## Future Plan
 - Expand language support by incorporating datasets for additional sign languages used globally.
