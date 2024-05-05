@@ -6,7 +6,8 @@ import cv2
 from TextToSign.ASL_scraper import *
 import google.generativeai as genai
 from signtext import *
-from googletrans import Translator
+
+# from googletrans import Translator
 from moviepy.editor import VideoFileClip, concatenate_videoclips
 import re
 from google.cloud import *
@@ -14,7 +15,7 @@ from google.cloud import *
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
-translator = Translator()
+# translator = Translator()
 sequence = deque(maxlen=input_shape[1])
 for i in range(input_shape[1]):
     sequence.append(np.zeros((input_shape[2], 3)))
@@ -31,6 +32,7 @@ label = ""
 certainty = 0.0
 
 api_key = " "
+genai.configure(api_key=api_key)
 
 
 @app.route("/", methods=["GET"])
@@ -75,14 +77,11 @@ def update_labels_certainty():
 
 
 def form_sentence(sequence):
-    hardcoded_prompt = "form proper sentences using these words, these are predicted by a sign language ASL recognition model, give only one output: "
-    sequence = [str(i) for i in sequence]
-    for i in sequence:
-        if i == "None" or i == "undefined":
-            sequence.remove(i)
-    if len(sequence) == 0:
+    hardcoded_prompt = "form proper sentences using these words, these are predicted by a sign language ASL recognition model, words fed are the sequence in which the words are predicted, give only one output. words: "
+    filtered_sequence = [str(i) for i in sequence if i != "None" and i != "undefined"]
+    if len(filtered_sequence) == 0:
         return "No proper sentence can be formed"
-    inputt = hardcoded_prompt + " ".join(sequence)
+    inputt = hardcoded_prompt + " ".join(filtered_sequence)
     genai.configure(api_key=api_key)
     llm = genai.GenerativeModel("gemini-pro")
     result = llm.generate_content(inputt)
@@ -191,14 +190,33 @@ def combine_videos(
     return f"gs://{bucket_name}/{output_blob_name}"
 
 
+# def combine_videos(
+#     video_paths,
+#     output_size=(640, 480),
+#     fps=30,
+# ):
+#     video_clips = []
+
+#     for video_path in video_paths:
+#         clip = VideoFileClip(video_path)
+#         if clip.size != output_size:
+#             clip = clip.resize(output_size)
+#         video_clips.append(clip)
+
+#     final_clip = concatenate_videoclips(video_clips)
+#     file = "output.mp4"
+#     final_clip.write_videofile(file, fps=fps, codec="libx264", audio_codec="aac")
+#     return file
+
+
 @app.route("/texttosign", methods=["POST"])
 def texttosign():
     videos = []
     sentence = request.json.get("sentence", "")
-    if re.match("^[a-zA-Z]*$", sentence):
-        sentence = sentence.lower()
-    else:
-        sentence = translator.translate(sentence, dest="en").text.lower()
+    # if re.match("^[a-zA-Z]*$", sentence):
+    #     sentence = sentence.lower()
+    # else:
+    #     sentence = translator.translate(sentence, dest="en").text.lower() # translation support, removed due to deployment issues.
     database_dir = "database"
     word = sentence.split(" ")
 
@@ -216,9 +234,6 @@ def texttosign():
     combined_video_frames = combine_videos(videos)
     if combined_video_frames:
         gif_bytes = signvector()
-
-    # os.remove("output.mp4")
-    # os.remove("outputnew.gif")
     response = make_response(gif_bytes)
     response.headers.set("Content-Type", "image/gif")
     response.headers.set("Content-Disposition", "attachment", filename="output.gif")
